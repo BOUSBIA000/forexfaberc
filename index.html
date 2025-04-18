@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام نقاط Forex Fabric</title>
+  
+  <!-- مكتبة تطبيق تلغرام للويب -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- تضمين خط القاهرة -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --amber-400: #FBBF24;
+      --amber-500: #F59E0B;
+      --amber-600: #D97706;
+      --yellow-300: #FCD34D;
+      --yellow-400: #FBBF24;
+      --yellow-500: #F59E0B;
+      --zinc-400: #A1A1AA;
+      --zinc-700: #3F3F46;
+      --zinc-800: #27272A;
+      --zinc-900: #18181B;
+      --red-700: #B91C1C;
+      --red-800: #991B1B;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom, var(--zinc-900), #000);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+    
+    .card {
+      border: 2px solid var(--amber-400);
+      border-radius: 0.75rem;
+      background-color: var(--zinc-900);
+      box-shadow: 0 4px 20px rgba(251, 191, 36, 0.2);
+      overflow: hidden;
+    }
+    
+    .card-content {
+      padding: 1.5rem;
+    }
+    
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .logo {
+      background: linear-gradient(to right, var(--amber-500), var(--yellow-300));
+      padding: 0.125rem;
+      border-radius: 9999px;
+    }
+    
+    .logo-inner {
+      background-color: var(--zinc-900);
+      border-radius: 9999px;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-icon {
+      width: 2rem;
+      height: 2rem;
+      color: var(--amber-400);
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--amber-400);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .stat-card {
+      background-color: var(--zinc-800);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .stat-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: var(--amber-400);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--zinc-400);
+    }
+    
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    
+    .progress-container {
+      margin-bottom: 1.5rem;
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-bar {
+      height: 0.5rem;
+      background-color: var(--zinc-700);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: var(--amber-400);
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+    
+    .countdown-container {
+      background-color: var(--zinc-800);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .countdown-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .countdown-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: var(--amber-400);
+    }
+    
+    .countdown-title {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+    }
+    
+    .countdown-item {
+      background-color: var(--zinc-900);
+      border-radius: 0.25rem;
+      padding: 0.5rem;
+    }
+    
+    .countdown-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .countdown-label {
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+    }
+    
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(to right, var(--amber-500), var(--yellow-400));
+      color: black;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(to right, var(--amber-600), var(--yellow-500));
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background-color: var(--zinc-800);
+      color: white;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--zinc-700);
+    }
+    
+    .btn-danger {
+      background-color: var(--red-800);
+      color: white;
+      border: 1px solid rgba(185, 28, 28, 0.3);
+    }
+    
+    .btn-danger:hover {
+      background-color: var(--red-700);
+    }
+    
+    .btn-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+    
+    .separator {
+      height: 1px;
+      background-color: var(--zinc-700);
+      margin: 1.5rem 0;
+    }
+    
+    .social-text {
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--zinc-400);
+      margin-bottom: 0.75rem;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      background-color: var(--zinc-800);
+      border-radius: 9999px;
+      color: var(--amber-400);
+      transition: background-color 0.2s ease;
+    }
+    
+    .social-link:hover {
+      background-color: var(--zinc-700);
+    }
+    
+    .social-link.visited {
+      opacity: 0.5;
+    }
+    
+    .social-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+    
+    .footer {
+      text-align: center;
+    }
+    
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+      border: 1px solid var(--zinc-700);
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem;
+    }
+    
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .input-field {
+      flex: 1;
+      background-color: var(--zinc-800);
+      border: 1px solid var(--zinc-700);
+      border-radius: 0.375rem;
+      padding: 0.5rem 0.75rem;
+      color: white;
+      font-family: 'Cairo', sans-serif;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: var(--amber-400);
+    }
+    
+    .btn-sm {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+    
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: var(--zinc-800);
+      border-left: 4px solid var(--amber-400);
+      border-radius: 0.375rem;
+      padding: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 300px;
+      z-index: 50;
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .toast.error {
+      border-left-color: #EF4444;
+    }
+    
+    .toast-title {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .toast-description {
+      font-size: 0.875rem;
+      color: var(--zinc-400);
+    }
+    
+    @media (max-width: 480px) {
+      .card-content {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-content">
+        <!-- شعار -->
+        <div class="logo-container">
+          <div class="logo">
+            <div class="logo-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- الرأس -->
+        <h1>🎉 مرحباً <span id="username-display"></span> في شركة Forex Fabric</h1>
+        
+        <!-- حقل إدخال اسم المستخدم (يظهر فقط إذا لم يتم تعيين اسم المستخدم) -->
+        <div id="username-input-container" style="display: none;" class="mb-6">
+          <div class="input-group">
+            <input type="text" id="username-input" placeholder="أدخل اسمك" class="input-field">
+            <button id="save-username" class="btn btn-primary btn-sm">حفظ</button>
+          </div>
+        </div>
+        
+        <!-- إحصائيات -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="8" r="7"></circle>
+              <polyline points="11 13 16 18 21 13"></polyline>
+              <circle cx="16" cy="18" r="5"></circle>
+            </svg>
+            <p class="stat-label">رصيدك</p>
+            <p class="stat-value" id="points-value">0 نقطة</p>
+          </div>
+          
+          <div class="stat-card">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <p class="stat-label">الإحالات</p>
+            <p class="stat-value" id="referrals-value">0</p>
+          </div>
+        </div>
+        
+        <!-- شريط التقدم -->
+        <div class="progress-container">
+          <div class="progress-header">
+            <span>التقدم نحو السحب التالي</span>
+            <span id="progress-text">0/2000</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        
+        <!-- العد التنازلي -->
+        <div class="countdown-container">
+          <div class="countdown-header">
+            <svg xmlns="http://www.w3.org/2000/svg" class="countdown-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="countdown-title">العد التنازلي للنقاط اليومية</span>
+          </div>
+          <div class="countdown-grid">
+            <div class="countdown-item">
+              <p class="countdown-value" id="hours">0</p>
+              <p class="countdown-label">ساعة</p>
+            </div>
+            <div class="countdown-item">
+              <p class="countdown-value" id="minutes">0</p>
+              <p class="countdown-label">دقيقة</p>
+            </div>
+            <div class="countdown-item">
+              <p class="countdown-value" id="seconds">0</p>
+              <p class="countdown-label">ثانية</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- أزرار العمليات -->
+        <div class="actions">
+          <button class="btn btn-primary" id="claim-daily">
+            <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 12 20 22 4 22 4 12"></polyline>
+              <rect x="2" y="7" width="20" height="5"></rect>
+              <line x1="12" y1="22" x2="12" y2="7"></line>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+            </svg>
+            احصل على نقاطك اليومية (5 نقاط)
+          </button>
+
+          <button class="btn btn-secondary" id="copy-referral">
+            <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            نسخ رابط الإحالة (5 نقاط لكل إحالة)
+          </button>
+
+          <button class="btn btn-secondary" id="referral-info">
+            <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            مشاهدة معلومات الإحالة
+          </button>
+          
+          <button class="btn btn-secondary" id="achievements-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="7"></circle>
+              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+            </svg>
+            نظام الإنجازات والمهام
+          </button>
+        </div>
+        
+        <div class="separator"></div>
+        
+        <!-- روابط التواصل الاجتماعي -->
+        <p class="social-text">اضغط على الروابط للحصول على 5 نقاط لكل رابط (مرة واحدة فقط)</p>
+        <div class="social-links">
+          <a href="#" class="social-link" data-social="telegram" id="telegram-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"></path>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </a>
+          <a href="#" class="social-link" data-social="twitter" id="twitter-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+            </svg>
+          </a>
+          <a href="#" class="social-link" data-social="instagram" id="instagram-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+          <a href="#" class="social-link" data-social="facebook" id="facebook-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+          </a>
+        </div>
+        
+        <!-- التذييل -->
+        <div class="footer">
+          <span class="badge">v1.1.0 Telegram</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- رسالة التنبيه -->
+  <div class="toast" id="toast">
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-description" id="toast-description"></div>
+  </div>
+
+  <script>
+    // تهيئة تطبيق تلغرام للويب
+    let tg = window.Telegram?.WebApp;
+    
+    // ضبط السمة والأزرار بناءً على تلغرام إذا كان متاحًا
+    if (tg) {
+      tg.expand(); // توسيع نافذة التطبيق
+      tg.enableClosingConfirmation(); // تمكين تأكيد الإغلاق
+      
+      // ضبط سمة الألوان بناءً على سمة تلغرام
+      if (tg.colorScheme === 'dark') {
+        document.body.classList.add('dark-theme');
+      }
+      
+      // إضافة زر رئيسي في تطبيق تلغرام
+      if (tg.MainButton) {
+        tg.MainButton.setText('مزيد من المعلومات');
+        tg.MainButton.onClick(() => {
+          showToast('تم النقر!', 'اتصل بإدارة Forex Fabric لمزيد من المعلومات');
+        });
+      }
+    }
+
+    // ثوابت النظام
+    const POINTS_CONFIG = {
+      DAILY_POINTS: 5,
+      SOCIAL_POINTS: 5,
+      REFERRAL_POINTS: 5,
+      WITHDRAWAL_THRESHOLD: 2000
+    };
+    
+    // البيانات الافتراضية
+    const DEFAULT_USER_DATA = {
+      username: '',
+      points: 0,
+      referrals: 0,
+      lastClaim: null,
+      visitedSocials: {
+        telegram: false,
+        twitter: false,
+        instagram: false,
+        facebook: false
+      }
+    };
+    
+    // بيانات المستخدم
+    let userData = { ...DEFAULT_USER_DATA };
+    
+    // العناصر المهمة
+    const pointsValueElement = document.getElementById('points-value');
+    const referralsValueElement = document.getElementById('referrals-value');
+    const progressTextElement = document.getElementById('progress-text');
+    const progressFillElement = document.getElementById('progress-fill');
+    const hoursElement = document.getElementById('hours');
+    const minutesElement = document.getElementById('minutes');
+    const secondsElement = document.getElementById('seconds');
+    const claimDailyButton = document.getElementById('claim-daily');
+    const copyReferralButton = document.getElementById('copy-referral');
+    const referralInfoButton = document.getElementById('referral-info');
+    const achievementsButton = document.getElementById('achievements-btn');
+    const telegramLink = document.getElementById('telegram-link');
+    const twitterLink = document.getElementById('twitter-link');
+    const instagramLink = document.getElementById('instagram-link');
+    const facebookLink = document.getElementById('facebook-link');
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toast-title');
+    const toastDescription = document.getElementById('toast-description');
+    const usernameDisplay = document.getElementById('username-display');
+    const usernameInputContainer = document.getElementById('username-input-container');
+    const usernameInput = document.getElementById('username-input');
+    const saveUsernameButton = document.getElementById('save-username');
+
+    // الدوال المساعدة
+    function loadUserData() {
+      const savedData = localStorage.getItem('forexFabricUserData');
+      if (savedData) {
+        try {
+          userData = JSON.parse(savedData);
+        } catch (error) {
+          console.error('Failed to parse user data:', error);
+          userData = { ...DEFAULT_USER_DATA };
+        }
+      }
+    }
+    
+    function saveUserData() {
+      localStorage.setItem('forexFabricUserData', JSON.stringify(userData));
+    }
+    
+    function updateUI() {
+      // تحديث النقاط والإحالات
+      pointsValueElement.textContent = `${userData.points} نقطة`;
+      referralsValueElement.textContent = userData.referrals.toString();
+      
+      // تحديث شريط التقدم
+      const progressPercentage = Math.min((userData.points / POINTS_CONFIG.WITHDRAWAL_THRESHOLD) * 100, 100);
+      progressTextElement.textContent = `${userData.points}/${POINTS_CONFIG.WITHDRAWAL_THRESHOLD}`;
+      progressFillElement.style.width = `${progressPercentage}%`;
+      
+      // تحديث حالة الأزرار
+      updateClaimButton();
+      
+      // تحديث حالة روابط التواصل
+      updateSocialLinks();
+      
+      // تحديث عرض اسم المستخدم
+      updateUsernameUI();
+    }
+    
+    function updateUsernameUI() {
+      // إذا كان المستخدم يستخدم تطبيق تلغرام وله اسم مستخدم هناك
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.first_name) {
+        if (!userData.username || userData.username.trim() === '') {
+          // استخدام اسم المستخدم من تلغرام إذا لم يتم تعيين اسم مخصص
+          userData.username = tg.initDataUnsafe.user.first_name;
+          saveUserData();
+        }
+      }
+      
+      if (userData.username && userData.username.trim() !== '') {
+        usernameDisplay.textContent = userData.username + ' ';
+        usernameInputContainer.style.display = 'none';
+      } else {
+        usernameDisplay.textContent = '';
+        usernameInputContainer.style.display = 'block';
+      }
+    }
+    
+    function saveUsername() {
+      const newUsername = usernameInput.value.trim();
+      if (newUsername) {
+        userData.username = newUsername;
+        saveUserData();
+        updateUsernameUI();
+        showToast('تم بنجاح!', 'تم حفظ اسم المستخدم');
+      } else {
+        showToast('خطأ', 'الرجاء إدخال اسم صحيح', true);
+      }
+    }
+    
+    function updateSocialLinks() {
+      const socialLinks = {
+        telegram: telegramLink,
+        twitter: twitterLink,
+        instagram: instagramLink,
+        facebook: facebookLink
+      };
+      
+      // تحديث حالة كل رابط بناءً على ما تم زيارته
+      for (const [social, element] of Object.entries(socialLinks)) {
+        if (userData.visitedSocials[social]) {
+          element.classList.add('visited');
+        } else {
+          element.classList.remove('visited');
+        }
+      }
+    }
+    
+    function canClaimDaily() {
+      if (!userData.lastClaim) return true;
+      
+      const lastClaim = new Date(userData.lastClaim);
+      const now = new Date();
+      
+      // إعادة التعيين في منتصف الليل
+      return lastClaim.getDate() !== now.getDate() || 
+             lastClaim.getMonth() !== now.getMonth() || 
+             lastClaim.getFullYear() !== now.getFullYear();
+    }
+    
+    function updateClaimButton() {
+      const canClaim = canClaimDaily();
+      claimDailyButton.disabled = !canClaim;
+      
+      if (!canClaim) {
+        claimDailyButton.classList.add('btn-primary-disabled');
+      } else {
+        claimDailyButton.classList.remove('btn-primary-disabled');
+      }
+    }
+    
+    function updateCountdown() {
+      if (!userData.lastClaim) {
+        hoursElement.textContent = '0';
+        minutesElement.textContent = '0';
+        secondsElement.textContent = '0';
+        return;
+      }
+      
+      const lastClaimDate = new Date(userData.lastClaim);
+      const now = new Date();
+      
+      // ضبط وقت المطالبة التالي إلى منتصف الليل
+      const nextClaim = new Date(lastClaimDate);
+      nextClaim.setDate(nextClaim.getDate() + 1);
+      nextClaim.setHours(0, 0, 0, 0);
+      
+      // حساب الوقت المتبقي
+      let diff = nextClaim.getTime() - now.getTime();
+      if (diff < 0) {
+        diff = 0;
+        updateClaimButton();
+      }
+      
+      // حساب الساعات والدقائق والثواني
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      hoursElement.textContent = hours.toString();
+      minutesElement.textContent = minutes.toString();
+      secondsElement.textContent = seconds.toString();
+    }
+    
+    function claimDailyPoints() {
+      if (!canClaimDaily()) return;
+      
+      userData.points += POINTS_CONFIG.DAILY_POINTS;
+      userData.lastClaim = new Date().toISOString();
+      
+      saveUserData();
+      updateUI();
+      
+      showToast('تم بنجاح!', `تم إضافة ${POINTS_CONFIG.DAILY_POINTS} نقاط إلى رصيدك`);
+    }
+    
+    function addSocialPoints(socialId) {
+      if (!userData.visitedSocials[socialId]) {
+        userData.visitedSocials[socialId] = true;
+        userData.points += POINTS_CONFIG.SOCIAL_POINTS;
+        
+        saveUserData();
+        updateUI();
+        
+        showToast('تم بنجاح!', `تم إضافة ${POINTS_CONFIG.SOCIAL_POINTS} نقاط من ${socialId}`);
+      }
+    }
+    
+    // تم حذف دالة إعادة التعيين بناءً على طلب المستخدم
+    
+    function showToast(title, description, isError = false) {
+      toastTitle.textContent = title;
+      toastDescription.textContent = description;
+      
+      if (isError) {
+        toast.classList.add('error');
+      } else {
+        toast.classList.remove('error');
+      }
+      
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    function checkReferral() {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get('ref');
+      
+      if (ref) {
+        userData.points += POINTS_CONFIG.REFERRAL_POINTS;
+        userData.referrals += 1;
+        
+        saveUserData();
+        updateUI();
+        
+        showToast('تم بنجاح!', `تم إضافة ${POINTS_CONFIG.REFERRAL_POINTS} نقاط من الإحالة`);
+        
+        // حذف معلمات الرابط بعد المعالجة
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+    
+    // معالجة الأحداث
+    claimDailyButton.addEventListener('click', () => {
+      if (canClaimDaily()) {
+        claimDailyPoints();
+      } else {
+        showToast('غير متاح', 'لقد حصلت بالفعل على النقاط اليومية، يرجى الانتظار حتى الغد', true);
+      }
+    });
+    
+    copyReferralButton.addEventListener('click', () => {
+      const referralId = Math.random().toString(36).substring(2, 10);
+      const referralLink = `${window.location.origin}${window.location.pathname}?ref=${referralId}`;
+      
+      navigator.clipboard.writeText(referralLink).then(() => {
+        showToast('تم النسخ!', 'تم نسخ رابط الإحالة إلى الحافظة');
+      });
+    });
+    
+    referralInfoButton.addEventListener('click', () => {
+      showToast('معلومات الإحالة', 'ستحصل على 5 نقاط لكل صديق تدعوه للانضمام');
+    });
+    
+    // مستمع حدث زر الإنجازات
+    achievementsButton.addEventListener('click', () => {
+      window.location.href = 'achievements.html';
+    });
+    
+    // تم حذف مستمع الحدث لزر إعادة التعيين
+    
+    // معالج حدث حفظ اسم المستخدم
+    saveUsernameButton.addEventListener('click', saveUsername);
+    
+    // يمكن حفظ الاسم بالضغط على زر الإدخال في حقل الاسم
+    usernameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        saveUsername();
+      }
+    });
+    
+    // معالجة أحداث الروابط الاجتماعية
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const socialId = link.getAttribute('data-social');
+        
+        if (socialId) {
+          addSocialPoints(socialId);
+          
+          // فتح الروابط بشكل مختلف حسب البيئة
+          if (tg) {
+            // في بيئة تلغرام، استخدم واجهة تلغرام API لفتح الروابط
+            let socialUrl = '';
+            
+            switch(socialId) {
+              case 'telegram':
+                socialUrl = 'https://t.me/forexfabric';
+                break;
+              case 'twitter':
+                socialUrl = 'https://twitter.com/forexfabric';
+                break;
+              case 'instagram':
+                socialUrl = 'https://instagram.com/forexfabric';
+                break;
+              case 'facebook':
+                socialUrl = 'https://facebook.com/forexfabric';
+                break;
+            }
+            
+            if (socialUrl) {
+              tg.openLink(socialUrl);
+            }
+          } else {
+            // في المتصفح العادي، فقط أظهر رسالة
+            setTimeout(() => {
+              showToast('تنبيه', 'تم فتح الرابط في علامة تبويب جديدة');
+            }, 500);
+          }
+        }
+      });
+    });
+    
+    // التحديث الدوري
+    let countdownInterval;
+    
+    function startApp() {
+      loadUserData();
+      updateUI();
+      updateCountdown();
+      checkReferral();
+      
+      // تحديث العد التنازلي كل ثانية
+      countdownInterval = setInterval(updateCountdown, 1000);
+    }
+    
+    // تشغيل التطبيق
+    startApp();
+  </script>
+</body>
+</html>
