@@ -522,6 +522,15 @@
             </svg>
             نظام الإنجازات والمهام
           </button>
+          
+          <button class="btn btn-secondary" id="withdraw-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            سحب الأرباح USDT
+          </button>
         </div>
         
         <div class="separator"></div>
@@ -628,6 +637,7 @@
     const copyReferralButton = document.getElementById('copy-referral');
     const referralInfoButton = document.getElementById('referral-info');
     const achievementsButton = document.getElementById('achievements-btn');
+    const withdrawButton = document.getElementById('withdraw-btn');
     const telegramLink = document.getElementById('telegram-link');
     const twitterLink = document.getElementById('twitter-link');
     const instagramLink = document.getElementById('instagram-link');
@@ -868,6 +878,11 @@
     // مستمع حدث زر الإنجازات
     achievementsButton.addEventListener('click', () => {
       window.location.href = 'achievements.html';
+    });
+    
+    // مستمع حدث زر سحب الأرباح
+    withdrawButton.addEventListener('click', () => {
+      window.location.href = 'withdraw.html';
     });
     
     // تم حذف مستمع الحدث لزر إعادة التعيين
