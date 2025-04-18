@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سحب الأرباح - Forex Fabric</title>
+  
+  <!-- مكتبة تطبيق تلغرام للويب -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  
+  <!-- تضمين خط القاهرة -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --amber-400: #FBBF24;
+      --amber-500: #F59E0B;
+      --amber-600: #D97706;
+      --yellow-300: #FCD34D;
+      --yellow-400: #FBBF24;
+      --yellow-500: #F59E0B;
+      --zinc-400: #A1A1AA;
+      --zinc-700: #3F3F46;
+      --zinc-800: #27272A;
+      --zinc-900: #18181B;
+      --red-700: #B91C1C;
+      --red-800: #991B1B;
+      --green-500: #22C55E;
+      --green-600: #16A34A;
+      --teal-500: #14b8a6;
+      --teal-600: #0d9488;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom, var(--zinc-900), #000);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 420px;
+    }
+    
+    .card {
+      border: 2px solid var(--amber-400);
+      border-radius: 0.75rem;
+      background-color: var(--zinc-900);
+      box-shadow: 0 4px 20px rgba(251, 191, 36, 0.2);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .card-content {
+      padding: 1.5rem;
+    }
+    
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .logo {
+      background: linear-gradient(to right, var(--amber-500), var(--yellow-300));
+      padding: 0.125rem;
+      border-radius: 9999px;
+    }
+    
+    .logo-inner {
+      background-color: var(--zinc-900);
+      border-radius: 9999px;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-icon {
+      width: 2rem;
+      height: 2rem;
+      color: var(--amber-400);
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--amber-400);
+    }
+    
+    .header-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .back-button {
+      background-color: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      color: var(--amber-400);
+      cursor: pointer;
+      font-size: 0.875rem;
+      gap: 0.25rem;
+    }
+    
+    .wallet-info {
+      background-color: var(--zinc-800);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .wallet-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--zinc-400);
+      margin-bottom: 0.5rem;
+    }
+    
+    .balance-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    
+    .balance {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .balance-amount {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--amber-400);
+    }
+    
+    .balance-currency {
+      font-size: 0.875rem;
+      color: var(--zinc-400);
+    }
+    
+    .min-withdrawal-note {
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+      padding: 0.5rem;
+      border-right: 2px solid var(--amber-400);
+      margin-bottom: 0.75rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.375rem;
+      color: var(--zinc-400);
+    }
+    
+    .form-input {
+      width: 100%;
+      background-color: var(--zinc-800);
+      border: 1px solid var(--zinc-700);
+      border-radius: 0.375rem;
+      padding: 0.625rem 0.75rem;
+      font-size: 0.875rem;
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      transition: border-color 0.2s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--amber-400);
+    }
+    
+    .form-input::placeholder {
+      color: var(--zinc-400);
+    }
+    
+    .input-group {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    
+    .network-select {
+      width: 100%;
+      background-color: var(--zinc-800);
+      border: 1px solid var(--zinc-700);
+      border-radius: 0.375rem;
+      padding: 0.625rem 0.75rem;
+      font-size: 0.875rem;
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      appearance: none;
+      transition: border-color 0.2s ease;
+    }
+    
+    .network-select:focus {
+      outline: none;
+      border-color: var(--amber-400);
+    }
+    
+    .select-arrow {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--zinc-400);
+    }
+    
+    .crypto-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .crypto-icon {
+      width: 2rem;
+      height: 2rem;
+      background-color: var(--zinc-800);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .crypto-name {
+      font-weight: 600;
+    }
+    
+    .crypto-network {
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+    }
+    
+    .fee-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      font-size: 0.875rem;
+      border-bottom: 1px dashed var(--zinc-700);
+      margin-bottom: 1rem;
+    }
+    
+    .fee-value {
+      color: var(--zinc-400);
+    }
+    
+    .total-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+    
+    .total-value {
+      color: var(--amber-400);
+    }
+    
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(to right, var(--amber-500), var(--yellow-400));
+      color: black;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(to right, var(--amber-600), var(--yellow-500));
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .withdrawal-terms {
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+      text-align: center;
+      margin-top: 1rem;
+    }
+    
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+      border: 1px solid var(--zinc-700);
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    
+    .transaction-history {
+      margin-top: 1.5rem;
+    }
+    
+    .transaction-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    
+    .transaction-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--amber-400);
+    }
+    
+    .transaction-item {
+      background-color: var(--zinc-800);
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .transaction-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .transaction-date {
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+    }
+    
+    .transaction-status {
+      font-size: 0.75rem;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+    }
+    
+    .status-pending {
+      background-color: rgba(251, 191, 36, 0.1);
+      color: var(--amber-400);
+    }
+    
+    .status-completed {
+      background-color: rgba(34, 197, 94, 0.1);
+      color: var(--green-500);
+    }
+    
+    .transaction-info {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .transaction-address {
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+      max-width: 70%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .transaction-amount {
+      font-weight: 600;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: var(--zinc-800);
+      border-left: 4px solid var(--amber-400);
+      border-radius: 0.375rem;
+      padding: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 300px;
+      z-index: 50;
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .toast.error {
+      border-left-color: #EF4444;
+    }
+    
+    .toast-title {
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .toast-description {
+      font-size: 0.875rem;
+      color: var(--zinc-400);
+    }
+    
+    @media (max-width: 480px) {
+      .card-content {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="card-content">
+        <!-- شعار -->
+        <div class="logo-container">
+          <div class="logo">
+            <div class="logo-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- الرأس والتنقل -->
+        <div class="header-nav">
+          <button class="back-button" id="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5"></path>
+              <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            العودة
+          </button>
+          <h1>سحب الأرباح</h1>
+        </div>
+        
+        <!-- معلومات المحفظة -->
+        <div class="wallet-info">
+          <div class="wallet-label">الرصيد المتاح</div>
+          <div class="balance-container">
+            <div class="balance">
+              <div class="balance-amount" id="available-points">0</div>
+              <div class="balance-currency">نقطة</div>
+            </div>
+            <div>
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjRjBCOTBCIj48cGF0aCBkPSJNMjA4IDIwOGMwLTE3LjcgMTQuMy0zMiAzMi0zMmgzMmMxNy43IDAgMzIgMTQuMyAzMiAzMnY0MGg0MGMxNy43IDAgMzIgMTQuMyAzMiAzMnYxMmMwIDQuOC0xLjYgOS40LTQuNSAxMy4ycy02LjkgNi41LTExLjUgNy4zTDMzNiAzMjF2MTRjMCAxNy43LTE0LjMgMzItMzIgMzJoLTk2Yy0xNy43IDAtMzItMTQuMy0zMi0zMnYtMTRsLTI0LjItOC41Yy00LjYtLjgtOC42LTMuNS0xMS41LTcuM3MtNC41LTguNS00LjUtMTMuMnYtMTJjMC0xNy43IDE0LjMtMzIgMzItMzJoNDB2LTQwem02NCAwdjQwSDI0MHYtNDB6bTQwIDE1MnYtMTJoLTE0NFYzNjB6TTMyNiAyMDguM2MxOS41IDE0LjIgMzIgMzcuNSAzMiA2My43aDEzLjVjMTggMCAzNC41IDE5LjkgMjguNyAzNy0uMS4zLS4yLjYtLjQgLjlDMzg1LjQgMzMyLjIgMzY3IDM2MCAxNDQgMzYwdjI0YzAgMzkuOCAzMi4yIDcyIDcyIDcyaDgwYTcyLjAzIDcyLjAzIDAgMCAwIDcyLTcydi0yNGgyMWMxMy4zIDAgMjQtMTAuNyAyNC0yNHYtNzJjMC0xMi44LTYuNi0yNC4zLTE3LjctMzAuOGwtNjktNDAuOHYtMTcuOWwuNC0uM3oiLz48L3N2Zz4=" width="24" height="24" alt="USDT">
+            </div>
+          </div>
+          <div class="min-withdrawal-note">الحد الأدنى للسحب هو 1000 نقطة (تعادل 10 USDT)</div>
+        </div>
+        
+        <!-- نموذج السحب -->
+        <form id="withdraw-form">
+          <div class="crypto-info">
+            <div class="crypto-icon">
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjRjBCOTBCIj48cGF0aCBkPSJNMjA4IDIwOGMwLTE3LjcgMTQuMy0zMiAzMi0zMmgzMmMxNy43IDAgMzIgMTQuMyAzMiAzMnY0MGg0MGMxNy43IDAgMzIgMTQuMyAzMiAzMnYxMmMwIDQuOC0xLjYgOS40LTQuNSAxMy4ycy02LjkgNi41LTExLjUgNy4zTDMzNiAzMjF2MTRjMCAxNy43LTE0LjMgMzItMzIgMzJoLTk2Yy0xNy43IDAtMzItMTQuMy0zMi0zMnYtMTRsLTI0LjItOC41Yy00LjYtLjgtOC42LTMuNS0xMS41LTcuM3MtNC41LTguNS00LjUtMTMuMnYtMTJjMC0xNy43IDE0LjMtMzIgMzItMzJoNDB2LTQwem02NCAwdjQwSDI0MHYtNDB6bTQwIDE1MnYtMTJoLTE0NFYzNjB6TTMyNiAyMDguM2MxOS41IDE0LjIgMzIgMzcuNSAzMiA2My43aDEzLjVjMTggMCAzNC41IDE5LjkgMjguNyAzNy0uMS4zLS4yLjYtLjQgLjlDMzg1LjQgMzMyLjIgMzY3IDM2MCAxNDQgMzYwdjI0YzAgMzkuOCAzMi4yIDcyIDcyIDcyaDgwYTcyLjAzIDcyLjAzIDAgMCAwIDcyLTcydi0yNGgyMWMxMy4zIDAgMjQtMTAuNyAyNC0yNHYtNzJjMC0xMi44LTYuNi0yNC4zLTE3LjctMzAuOGwtNjktNDAuOHYtMTcuOWwuNC0uM3oiLz48L3N2Zz4=" width="20" height="20" alt="USDT">
+            </div>
+            <div>
+              <div class="crypto-name">Tether (USDT)</div>
+              <div class="crypto-network" id="selected-network">TRC20 - شبكة ترون</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">اختر الشبكة</label>
+            <div class="input-group">
+              <select class="network-select" id="network-select">
+                <option value="trc20" selected>TRC20 (شبكة ترون)</option>
+                <option value="erc20">ERC20 (شبكة إيثيريوم)</option>
+                <option value="bep20">BEP20 (BNB Smart Chain)</option>
+              </select>
+              <div class="select-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">عنوان محفظة USDT</label>
+            <input type="text" class="form-input" id="wallet-address" placeholder="أدخل عنوان محفظة USDT الخاصة بك" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">المبلغ بالنقاط</label>
+            <input type="number" class="form-input" id="amount" min="1000" step="100" placeholder="الحد الأدنى 1000 نقطة" required>
+          </div>
+          
+          <div class="fee-info">
+            <div class="fee-label">رسوم التحويل:</div>
+            <div class="fee-value">100 نقطة</div>
+          </div>
+          
+          <div class="total-info">
+            <div class="total-label">المبلغ النهائي:</div>
+            <div class="total-value" id="total-amount">0 USDT</div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" id="withdraw-btn" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M2 12h20"></path>
+            </svg>
+            تأكيد السحب
+          </button>
+          
+          <div class="withdrawal-terms">
+            بالضغط على "تأكيد السحب"، أنت توافق على شروط وأحكام عملية السحب. قد تستغرق عملية السحب ما بين 24-48 ساعة للمعالجة.
+          </div>
+        </form>
+        
+        <!-- تاريخ المعاملات -->
+        <div class="transaction-history">
+          <div class="transaction-header">
+            <div class="transaction-title">تاريخ المعاملات</div>
+          </div>
+          
+          <div id="transaction-list">
+            <!-- ستتم إضافة المعاملات هنا ديناميكيًا إذا كانت موجودة -->
+            <div class="transaction-item" style="text-align: center; padding: 1.5rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; color: var(--zinc-700); display: block; margin-bottom: 0.5rem;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <p style="color: var(--zinc-400);">لا توجد معاملات سابقة</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- التذييل -->
+        <div class="footer">
+          <span class="badge">v1.2.0 USDT Withdraw</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- رسالة التنبيه -->
+  <div class="toast" id="toast">
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-description" id="toast-description"></div>
+  </div>
+
+  <script>
+    // تهيئة تطبيق تلغرام للويب
+    let tg = window.Telegram?.WebApp;
+    
+    // ضبط السمة والأزرار بناءً على تلغرام إذا كان متاحًا
+    if (tg) {
+      tg.expand(); // توسيع نافذة التطبيق
+      
+      // ضبط سمة الألوان بناءً على سمة تلغرام
+      if (tg.colorScheme === 'dark') {
+        document.body.classList.add('dark-theme');
+      }
+      
+      // إضافة زر رئيسي في تطبيق تلغرام
+      if (tg.MainButton) {
+        tg.MainButton.setText('الرجوع للرئيسية');
+        tg.MainButton.onClick(() => {
+          window.location.href = "index.html";
+        });
+      }
+    }
+
+    // ثوابت النظام
+    const POINTS_CONFIG = {
+      WITHDRAWAL_FEE: 100,
+      MIN_WITHDRAWAL: 1000,
+      POINTS_TO_USDT_RATIO: 100, // كل 100 نقطة = 1 USDT
+    };
+    
+    // البيانات الافتراضية
+    const DEFAULT_USER_DATA = {
+      username: '',
+      points: 0,
+      referrals: 0,
+      lastClaim: null,
+      visitedSocials: {
+        telegram: false,
+        twitter: false,
+        instagram: false,
+        facebook: false
+      },
+      transactions: []
+    };
+    
+    // بيانات المستخدم
+    let userData = { ...DEFAULT_USER_DATA };
+    
+    // العناصر المهمة
+    const backButton = document.getElementById('back-button');
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toast-title');
+    const toastDescription = document.getElementById('toast-description');
+    const withdrawForm = document.getElementById('withdraw-form');
+    const availablePointsElement = document.getElementById('available-points');
+    const selectedNetworkElement = document.getElementById('selected-network');
+    const networkSelect = document.getElementById('network-select');
+    const walletAddressInput = document.getElementById('wallet-address');
+    const amountInput = document.getElementById('amount');
+    const totalAmountElement = document.getElementById('total-amount');
+    const withdrawBtn = document.getElementById('withdraw-btn');
+    const transactionList = document.getElementById('transaction-list');
+    
+    // الدوال المساعدة
+    function loadUserData() {
+      const savedData = localStorage.getItem('forexFabricUserData');
+      if (savedData) {
+        try {
+          userData = JSON.parse(savedData);
+          
+          // إضافة حقل المعاملات إذا لم يكن موجودًا
+          if (!userData.transactions) {
+            userData.transactions = [];
+          }
+          
+        } catch (error) {
+          console.error('Failed to parse user data:', error);
+          userData = { ...DEFAULT_USER_DATA };
+        }
+      }
+    }
+    
+    function saveUserData() {
+      localStorage.setItem('forexFabricUserData', JSON.stringify(userData));
+    }
+    
+    function updateUI() {
+      // تحديث الرصيد المتاح
+      availablePointsElement.textContent = userData.points.toString();
+      
+      // تحديث حالة زر السحب
+      updateWithdrawButton();
+      
+      // تحديث سجل المعاملات
+      updateTransactionHistory();
+    }
+    
+    function updateWithdrawButton() {
+      // تمكين زر السحب فقط إذا كان لدى المستخدم نقاط كافية وتم إدخال عنوان محفظة صحيح
+      const hasEnoughPoints = userData.points >= POINTS_CONFIG.MIN_WITHDRAWAL;
+      const hasValidWalletAddress = walletAddressInput.value.trim().length > 10;
+      const hasValidAmount = amountInput.value >= POINTS_CONFIG.MIN_WITHDRAWAL && amountInput.value <= userData.points;
+      
+      withdrawBtn.disabled = !(hasEnoughPoints && hasValidWalletAddress && hasValidAmount);
+    }
+    
+    function updateTotalAmount() {
+      const amount = parseFloat(amountInput.value) || 0;
+      const amountAfterFee = Math.max(0, amount - POINTS_CONFIG.WITHDRAWAL_FEE);
+      const usdtAmount = (amountAfterFee / POINTS_CONFIG.POINTS_TO_USDT_RATIO).toFixed(2);
+      
+      totalAmountElement.textContent = `${usdtAmount} USDT`;
+    }
+    
+    function updateSelectedNetwork() {
+      const selectedValue = networkSelect.value;
+      let networkText = 'TRC20 - شبكة ترون';
+      
+      switch(selectedValue) {
+        case 'erc20':
+          networkText = 'ERC20 - شبكة إيثيريوم';
+          break;
+        case 'bep20':
+          networkText = 'BEP20 - BNB Smart Chain';
+          break;
+      }
+      
+      selectedNetworkElement.textContent = networkText;
+    }
+    
+    function updateTransactionHistory() {
+      if (!userData.transactions || userData.transactions.length === 0) {
+        transactionList.innerHTML = `
+          <div class="transaction-item" style="text-align: center; padding: 1.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; color: var(--zinc-700); display: block; margin-bottom: 0.5rem;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <p style="color: var(--zinc-400);">لا توجد معاملات سابقة</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // عرض آخر 3 معاملات
+      const transactions = userData.transactions.slice(-3);
+      let html = '';
+      
+      for (const tx of transactions) {
+        const statusClass = tx.status === 'completed' ? 'status-completed' : 'status-pending';
+        const statusText = tx.status === 'completed' ? 'مكتمل' : 'قيد التنفيذ';
+        
+        html += `
+          <div class="transaction-item">
+            <div class="transaction-top">
+              <div class="transaction-date">${formatDate(tx.date)}</div>
+              <div class="transaction-status ${statusClass}">${statusText}</div>
+            </div>
+            <div class="transaction-info">
+              <div class="transaction-address" title="${tx.address}">${truncateAddress(tx.address)}</div>
+              <div class="transaction-amount">${tx.amountUSDT} USDT</div>
+            </div>
+          </div>
+        `;
+      }
+      
+      transactionList.innerHTML = html;
+    }
+    
+    function truncateAddress(address) {
+      if (!address) return '';
+      return address.slice(0, 6) + '...' + address.slice(-4);
+    }
+    
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('ar-SA', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+    }
+    
+    function submitWithdrawal(event) {
+      event.preventDefault();
+      
+      const amount = parseFloat(amountInput.value);
+      const walletAddress = walletAddressInput.value.trim();
+      const network = networkSelect.value;
+      
+      // التحقق من صحة المدخلات
+      if (amount < POINTS_CONFIG.MIN_WITHDRAWAL) {
+        showToast('خطأ', `الحد الأدنى للسحب هو ${POINTS_CONFIG.MIN_WITHDRAWAL} نقطة`, true);
+        return;
+      }
+      
+      if (amount > userData.points) {
+        showToast('خطأ', 'المبلغ المطلوب أكبر من رصيدك المتاح', true);
+        return;
+      }
+      
+      if (walletAddress.length < 10) {
+        showToast('خطأ', 'يرجى إدخال عنوان محفظة صحيح', true);
+        return;
+      }
+      
+      // حساب المبلغ النهائي بعد الرسوم
+      const amountAfterFee = amount - POINTS_CONFIG.WITHDRAWAL_FEE;
+      const usdtAmount = (amountAfterFee / POINTS_CONFIG.POINTS_TO_USDT_RATIO).toFixed(2);
+      
+      // إنشاء معاملة جديدة
+      const transaction = {
+        id: Date.now().toString(),
+        date: new Date().toISOString(),
+        amount: amount,
+        amountUSDT: usdtAmount,
+        fee: POINTS_CONFIG.WITHDRAWAL_FEE,
+        network: network,
+        address: walletAddress,
+        status: 'pending' // في البداية، المعاملة تكون معلقة
+      };
+      
+      // تحديث بيانات المستخدم
+      userData.points -= amount;
+      if (!userData.transactions) userData.transactions = [];
+      userData.transactions.push(transaction);
+      
+      // حفظ البيانات
+      saveUserData();
+      
+      // تحديث الواجهة
+      updateUI();
+      
+      // عرض رسالة النجاح
+      showToast('تم إرسال الطلب!', 'تم إرسال طلب السحب بنجاح، وسيتم معالجته خلال 24-48 ساعة');
+      
+      // إعادة تعيين النموذج
+      amountInput.value = '';
+      updateTotalAmount();
+    }
+    
+    function goBack() {
+      window.location.href = "index.html";
+    }
+    
+    function showToast(title, description, isError = false) {
+      toastTitle.textContent = title;
+      toastDescription.textContent = description;
+      
+      if (isError) {
+        toast.classList.add('error');
+      } else {
+        toast.classList.remove('error');
+      }
+      
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    // معالجة الأحداث
+    backButton.addEventListener('click', goBack);
+    
+    networkSelect.addEventListener('change', updateSelectedNetwork);
+    
+    amountInput.addEventListener('input', () => {
+      updateTotalAmount();
+      updateWithdrawButton();
+    });
+    
+    walletAddressInput.addEventListener('input', updateWithdrawButton);
+    
+    withdrawForm.addEventListener('submit', submitWithdrawal);
+    
+    // تشغيل التطبيق
+    function startApp() {
+      loadUserData();
+      updateUI();
+      updateTotalAmount();
+      updateSelectedNetwork();
+    }
+    
+    // تشغيل التطبيق
+    startApp();
+  </script>
+</body>
+</html>
