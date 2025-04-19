@@ -422,13 +422,13 @@
 
         <!-- Header -->
         <div class="header">
-          <a href="forex_app_home.html" class="back-button">
+          <button id="back-button" class="back-button">
             <svg xmlns="http://www.w3.org/2000/svg" class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5"></path>
               <path d="M12 19l-7-7 7-7"></path>
             </svg>
             العودة
-          </a>
+          </button>
           <h2 class="page-title">نظام الإنجازات</h2>
         </div>
         
@@ -666,6 +666,14 @@
     
     // Setup Event Listeners
     function setupEventListeners() {
+      // Back Button
+      const backButton = document.getElementById('back-button');
+      if (backButton) {
+        backButton.addEventListener('click', () => {
+          window.location.href = 'forex_app_home.html';
+        });
+      }
+      
       // Beginner Claim Button
       beginnerClaimBtn.addEventListener('click', () => {
         const beginner = userData.achievements.find(a => a.id === 'beginner');
