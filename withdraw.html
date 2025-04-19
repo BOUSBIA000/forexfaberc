@@ -2,13 +2,13 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
   <title>سحب الأرباح - Forex Fabric</title>
   
-  <!-- مكتبة تطبيق تلغرام للويب -->
+  <!-- Telegram Web App API -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   
-  <!-- تضمين خط القاهرة -->
+  <!-- Cairo Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -500,31 +500,18 @@
     }
     
     .empty-text {
+      font-size: 0.875rem;
       color: var(--text-muted);
+      line-height: 1.5;
     }
     
-    /* Footer Section */
-    .footer {
-      text-align: center;
-      margin-top: 1rem;
-    }
-    
-    .badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 9999px;
-      padding: 0.25rem 0.75rem;
-    }
-    
-    /* Toast Notification */
     .toast {
       position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
+      bottom: 1rem;
+      right: 1rem;
       background-color: var(--background-light);
-      border-radius: 1rem;
+      border-left: 4px solid var(--primary);
+      border-radius: 0.375rem;
       padding: 1rem;
       box-shadow: var(--card-shadow);
       max-width: 300px;
@@ -532,7 +519,6 @@
       opacity: 0;
       transform: translateY(1rem);
       transition: opacity 0.3s ease, transform 0.3s ease;
-      border-left: 4px solid var(--primary);
     }
     
     .toast.show {
@@ -548,16 +534,9 @@
       border-left-color: var(--success);
     }
     
-    .toast.warning {
-      border-left-color: var(--warning);
-    }
-    
     .toast-title {
       font-weight: 700;
       margin-bottom: 0.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
     
     .toast-description {
@@ -565,7 +544,6 @@
       color: var(--text-muted);
     }
     
-    /* Responsive Adjustments */
     @media (max-width: 480px) {
       .card-content {
         padding: 1.25rem;
@@ -577,110 +555,397 @@
   <div class="container">
     <div class="card">
       <div class="card-content">
-        <!-- الرأس والتنقل -->
+        <!-- Header with Navigation -->
         <div class="header-nav">
           <button class="back-button" id="back-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5"></path>
               <path d="M12 19l-7-7 7-7"></path>
             </svg>
-            العودة للرئيسية
+            العودة
           </button>
-          <h2 class="page-title">سحب الأرباح</h2>
+          <h1 class="page-title">سحب الأرباح</h1>
         </div>
         
-        <!-- معلومات المحفظة -->
+        <!-- Wallet Info -->
         <div class="wallet-info">
           <div class="wallet-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="5" width="20" height="14" rx="2"></rect>
-              <line x1="2" y1="10" x2="22" y2="10"></line>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+              <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
+              <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
             </svg>
-            الرصيد المتاح
+            رصيدك الحالي
           </div>
           <div class="balance-container">
             <div class="balance">
-              <div class="balance-amount" id="available-points">0</div>
+              <div class="balance-amount" id="points-balance">250</div>
               <div class="balance-currency">نقطة</div>
             </div>
-            <div>
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjRjBCOTBCIj48cGF0aCBkPSJNMjA4IDIwOGMwLTE3LjcgMTQuMy0zMiAzMi0zMmgzMmMxNy43IDAgMzIgMTQuMyAzMiAzMnY0MGg0MGMxNy43IDAgMzIgMTQuMyAzMiAzMnYxMmMwIDQuOC0xLjYgOS40LTQuNSAxMy4ycy02LjkgNi41LTExLjUgNy4zTDMzNiAzMjF2MTRjMCAxNy43LTE0LjMgMzItMzIgMzJoLTk2Yy0xNy43IDAtMzItMTQuMy0zMi0zMnYtMTRsLTI0LjItOC41Yy00LjYtLjgtOC42LTMuNS0xMS41LTcuM3MtNC41LTguNS00LjUtMTMuMnYtMTJjMC0xNy43IDE0LjMtMzIgMzItMzJoNDB2LTQwem02NCAwdjQwSDI0MHYtNDB6bTQwIDE1MnYtMTJoLTE0NFYzNjB6TTMyNiAyMDguM2MxOS41IDE0LjIgMzIgMzcuNSAzMiA2My43aDEzLjVjMTggMCAzNC41IDE5LjkgMjguNyAzNy0uMS4zLS4yLjYtLjQgLjlDMzg1LjQgMzMyLjIgMzY3IDM2MCAxNDQgMzYwdjI0YzAgMzkuOCAzMi4yIDcyIDcyIDcyaDgwYTcyLjAzIDcyLjAzIDAgMCAwIDcyLTcydi0yNGgyMWMxMy4zIDAgMjQtMTAuNyAyNC0yNHYtNzJjMC0xMi44LTYuNi0yNC4zLTE3LjctMzAuOGwtNjktNDAuOHYtMTcuOWwuNC0uM3oiLz48L3N2Zz4=" width="24" height="24" alt="USDT">
+            <div class="balance">
+              <div class="balance-amount" id="usdt-balance">2.5</div>
+              <div class="balance-currency">USDT</div>
             </div>
           </div>
-          <div class="min-withdrawal-note">الحد الأدنى للسحب هو 1000 نقطة (تعادل 10 USDT). يتم تحويل كل 100 نقطة إلى 1 USDT.</div>
+          <div class="min-withdrawal-note">
+            الحد الأدنى للسحب هو 1000 نقطة (10 USDT). يتم تحويل كل 100 نقطة إلى 1 USDT.
+          </div>
         </div>
         
-        <!-- نموذج السحب -->
-        <form id="withdraw-form">
+        <!-- Withdrawal Form -->
+        <form id="withdrawal-form">
+          <div class="form-group">
+            <label for="wallet-address" class="form-label">عنوان المحفظة</label>
+            <input type="text" id="wallet-address" class="form-input" placeholder="أدخل عنوان محفظة USDT الخاص بك" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="network" class="form-label">اختر الشبكة</label>
+            <div class="input-group">
+              <select id="network" class="network-select" required>
+                <option value="" disabled selected>اختر شبكة التحويل</option>
+                <option value="trc20">TRC20 (Tron)</option>
+                <option value="erc20">ERC20 (Ethereum)</option>
+                <option value="bep20">BEP20 (Binance Smart Chain)</option>
+              </select>
+              <span class="select-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
+            </div>
+          </div>
+          
+          <!-- Crypto Info -->
           <div class="crypto-info">
             <div class="crypto-icon">
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjRjBCOTBCIj48cGF0aCBkPSJNMjA4IDIwOGMwLTE3LjcgMTQuMy0zMiAzMi0zMmgzMmMxNy43IDAgMzIgMTQuMyAzMiAzMnY0MGg0MGMxNy43IDAgMzIgMTQuMyAzMiAzMnYxMmMwIDQuOC0xLjYgOS40LTQuNSAxMy4ycy02LjkgNi41LTExLjUgNy4zTDMzNiAzMjF2MTRjMCAxNy43LTE0LjMgMzItMzIgMzJoLTk2Yy0xNy43IDAtMzItMTQuMy0zMi0zMnYtMTRsLTI0LjItOC41Yy00LjYtLjgtOC42LTMuNS0xMS41LTcuM3MtNC41LTguNS00LjUtMTMuMnYtMTJjMC0xNy43IDE0LjMtMzIgMzItMzJoNDB2LTQwem02NCAwdjQwSDI0MHYtNDB6bTQwIDE1MnYtMTJoLTE0NFYzNjB6TTMyNiAyMDguM2MxOS41IDE0LjIgMzIgMzcuNSAzMiA2My43aDEzLjVjMTggMCAzNC41IDE5LjkgMjguNyAzNy0uMS4zLS4yLjYtLjQgLjlDMzg1LjQgMzMyLjIgMzY3IDM2MCAxNDQgMzYwdjI0YzAgMzkuOCAzMi4yIDcyIDcyIDcyaDgwYTcyLjAzIDcyLjAzIDAgMCAwIDcyLTcydi0yNGgyMWMxMy4zIDAgMjQtMTAuNyAyNC0yNHYtNzJjMC0xMi44LTYuNi0yNC4zLTE3LjctMzAuOGwtNjktNDAuOHYtMTcuOWwuNC0uM3oiLz48L3N2Zz4=" width="20" height="20" alt="USDT">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#F59E0B">
+                <path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.16-6.2L7.828 5.14m3.268 1.061-.347 1.969"></path>
+              </svg>
             </div>
             <div class="crypto-details">
-              <div class="crypto-name">Tether (USDT)</div>
-              <div class="crypto-network" id="selected-network">TRC20 - شبكة ترون</div>
+              <div class="crypto-name">USDT (Tether)</div>
+              <div class="crypto-network" id="selected-network">لم يتم اختيار شبكة بعد</div>
             </div>
           </div>
           
-          <div class="form-group">
-            <label class="form-label">اختر الشبكة</label>
-            <div class="input-group">
-              <select class="network-select" id="network-select">
-                <option value="trc20" selected>TRC20 (شبكة ترون)</option>
-                <option value="erc20">ERC20 (شبكة إيثيريوم)</option>
-                <option value="bep20">BEP20 (BNB Smart Chain)</option>
-              </select>
-              <div class="select-arrow">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M6 9l6 6 6-6"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">عنوان محفظة USDT</label>
-            <input type="text" class="form-input" id="wallet-address" placeholder="أدخل عنوان محفظة USDT الخاصة بك" required>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">المبلغ بالنقاط</label>
-            <input type="number" class="form-input" id="amount" min="1000" step="100" placeholder="الحد الأدنى 1000 نقطة" required>
-          </div>
-          
+          <!-- Fee and Total -->
           <div class="fee-info">
             <div class="fee-label">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20"></path>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
               </svg>
-              رسوم التحويل:
+              رسوم السحب
             </div>
-            <div class="fee-value">100 نقطة</div>
+            <div class="fee-value">100 نقطة (1 USDT)</div>
           </div>
           
           <div class="total-info">
-            <div class="total-label">المبلغ النهائي:</div>
-            <div class="total-value" id="total-amount">0 USDT</div>
+            <div class="total-label">المبلغ الصافي</div>
+            <div class="total-value" id="net-amount">1.5 USDT</div>
           </div>
           
-          <button type="submit" class="btn btn-accent" id="withdraw-btn" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v20M2 12h20"></path>
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary" id="submit-withdrawal" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 12v4"></path>
+              <path d="M12 8h.01"></path>
+              <path d="M7 3h9c2 0 4 2 4 4v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7c0-2 2-4 5-4Z"></path>
             </svg>
-            تأكيد السحب
+            تأكيد عملية السحب
           </button>
           
-          <div class="withdrawal-terms">
-            بالضغط على "تأكيد السحب"، أنت توافق على شروط وأحكام عملية السحب. قد تستغرق عملية السحب ما بين 24-48 ساعة للمعالجة.
-          </div>
+          <p class="withdrawal-terms">
+            بالضغط على تأكيد السحب، فإنك توافق على شروط وأحكام الخدمة. قد تستغرق عملية السحب ما بين 24 إلى 72 ساعة.
+          </p>
         </form>
         
-        <!-- تاريخ المعاملات -->
+        <!-- Transaction History -->
         <div class="transaction-history">
           <div class="transaction-header">
-            <div class="transaction-title">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
-                <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 
+            <h2 class="transaction-title">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20"></path>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              سجل المعاملات
+            </h2>
+          </div>
+          
+          <!-- Empty State -->
+          <div class="empty-transactions" id="empty-transactions">
+            <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+            </svg>
+            <p class="empty-text">لم تقم بإجراء أي عمليات سحب بعد.<br>ستظهر معاملاتك هنا عند إجراء عملية سحب.</p>
+          </div>
+          
+          <!-- Transaction Items (Hidden by default) -->
+          <div id="transaction-list" style="display: none;">
+            <!-- Will be populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <div class="toast-title" id="toast-title">عنوان الإشعار</div>
+    <div class="toast-description" id="toast-description">وصف الإشعار هنا</div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const backButton = document.getElementById('back-button');
+    const pointsBalance = document.getElementById('points-balance');
+    const usdtBalance = document.getElementById('usdt-balance');
+    const walletAddress = document.getElementById('wallet-address');
+    const networkSelect = document.getElementById('network');
+    const selectedNetwork = document.getElementById('selected-network');
+    const netAmount = document.getElementById('net-amount');
+    const submitBtn = document.getElementById('submit-withdrawal');
+    const withdrawalForm = document.getElementById('withdrawal-form');
+    const emptyTransactions = document.getElementById('empty-transactions');
+    const transactionList = document.getElementById('transaction-list');
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toast-title');
+    const toastDescription = document.getElementById('toast-description');
+    
+    // User Data (Simulated)
+    let userData = {
+      telegramId: '12345',
+      username: 'demo_user',
+      points: 250,
+      referrals: 3,
+      transactions: []
+    };
+    
+    // Telegram WebApp
+    let tg = window.Telegram?.WebApp;
+    
+    // Initialize App
+    document.addEventListener('DOMContentLoaded', () => {
+      initApp();
+      
+      // Set Telegram WebApp Settings
+      if (tg) {
+        tg.ready();
+        tg.expand();
+      }
+    });
+    
+    // Initialize App
+    function initApp() {
+      updateBalances();
+      setupEventListeners();
+      
+      // Check if points are enough for withdrawal
+      checkWithdrawalEligibility();
+    }
+    
+    // Update Balances
+    function updateBalances() {
+      pointsBalance.textContent = userData.points;
+      
+      // Calculate USDT equivalent (100 points = 1 USDT)
+      const usdtValue = (userData.points / 100).toFixed(1);
+      usdtBalance.textContent = usdtValue;
+      
+      // Calculate net amount after fees
+      calculateNetAmount();
+    }
+    
+    // Calculate Net Amount
+    function calculateNetAmount() {
+      const totalUSDT = userData.points / 100;
+      const feeUSDT = 1; // 1 USDT fee
+      const net = Math.max(0, totalUSDT - feeUSDT).toFixed(1);
+      netAmount.textContent = `${net} USDT`;
+    }
+    
+    // Check Withdrawal Eligibility
+    function checkWithdrawalEligibility() {
+      if (userData.points < 1000) {
+        submitBtn.disabled = true;
+        showToast('رصيد غير كاف', 'الحد الأدنى للسحب هو 1000 نقطة (10 USDT).', 'error');
+      } else {
+        submitBtn.disabled = false;
+      }
+    }
+    
+    // Setup Event Listeners
+    function setupEventListeners() {
+      // Back Button
+      backButton.addEventListener('click', () => {
+        window.location.href = 'forex_app_home.html';
+      });
+      
+      // Network Select
+      networkSelect.addEventListener('change', () => {
+        const network = networkSelect.value;
+        switch (network) {
+          case 'trc20':
+            selectedNetwork.textContent = 'TRC20 (Tron)';
+            break;
+          case 'erc20':
+            selectedNetwork.textContent = 'ERC20 (Ethereum)';
+            break;
+          case 'bep20':
+            selectedNetwork.textContent = 'BEP20 (Binance Smart Chain)';
+            break;
+          default:
+            selectedNetwork.textContent = 'لم يتم اختيار شبكة بعد';
+        }
+      });
+      
+      // Withdrawal Form
+      withdrawalForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (userData.points < 1000) {
+          showToast('رصيد غير كاف', 'الحد الأدنى للسحب هو 1000 نقطة (10 USDT).', 'error');
+          return;
+        }
+        
+        const address = walletAddress.value;
+        const network = networkSelect.value;
+        
+        if (!address) {
+          showToast('خطأ في البيانات', 'يرجى إدخال عنوان المحفظة.', 'error');
+          return;
+        }
+        
+        if (!network) {
+          showToast('خطأ في البيانات', 'يرجى اختيار الشبكة.', 'error');
+          return;
+        }
+        
+        // Validate wallet address format
+        if (!validateWalletAddress(address, network)) {
+          showToast('عنوان غير صالح', 'يرجى التأكد من إدخال عنوان محفظة صحيح.', 'error');
+          return;
+        }
+        
+        // Process withdrawal (simulate success)
+        processWithdrawal(address, network);
+      });
+    }
+    
+    // Validate Wallet Address
+    function validateWalletAddress(address, network) {
+      // Simple validation - in a real app, this would be more sophisticated
+      if (network === 'trc20' && address.length >= 34) {
+        return true;
+      } else if (network === 'erc20' && address.startsWith('0x') && address.length >= 42) {
+        return true;
+      } else if (network === 'bep20' && address.startsWith('0x') && address.length >= 42) {
+        return true;
+      }
+      
+      // For demo purposes, accept any address that is at least 10 characters
+      return address.length >= 10;
+    }
+    
+    // Process Withdrawal
+    function processWithdrawal(address, network) {
+      // Calculate amounts
+      const pointsToDeduct = userData.points < 1000 ? 0 : Math.min(userData.points, 1000);
+      const usdtAmount = pointsToDeduct / 100 - 1; // Minus 1 USDT fee
+      
+      if (usdtAmount <= 0) {
+        showToast('رصيد غير كاف', 'يجب أن يكون لديك رصيد كافٍ بعد خصم الرسوم.', 'error');
+        return;
+      }
+      
+      // Create transaction record
+      const transaction = {
+        id: `TX${Date.now().toString().slice(-6)}`,
+        date: new Date(),
+        address: address,
+        network: network,
+        amount: usdtAmount,
+        status: 'pending'
+      };
+      
+      // Update user data
+      userData.points -= pointsToDeduct;
+      userData.transactions.push(transaction);
+      
+      // Update UI
+      updateBalances();
+      updateTransactionHistory();
+      
+      // Reset form
+      withdrawalForm.reset();
+      selectedNetwork.textContent = 'لم يتم اختيار شبكة بعد';
+      
+      // Show success message
+      showToast('تم تقديم طلب السحب', 'تم إرسال طلب السحب بنجاح وسيتم معالجته قريباً.', 'success');
+      
+      // Check if still eligible for withdrawal
+      checkWithdrawalEligibility();
+    }
+    
+    // Update Transaction History
+    function updateTransactionHistory() {
+      if (userData.transactions.length === 0) {
+        emptyTransactions.style.display = 'block';
+        transactionList.style.display = 'none';
+        return;
+      }
+      
+      emptyTransactions.style.display = 'none';
+      transactionList.style.display = 'block';
+      transactionList.innerHTML = '';
+      
+      // Sort transactions by date (newest first)
+      const sortedTransactions = [...userData.transactions].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+      
+      // Create transaction items
+      sortedTransactions.forEach(tx => {
+        const date = new Date(tx.date);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        
+        const txItem = document.createElement('div');
+        txItem.className = 'transaction-item';
+        txItem.innerHTML = `
+          <div class="transaction-top">
+            <span class="transaction-date">${formattedDate}</span>
+            <span class="transaction-status status-${tx.status}">${tx.status === 'pending' ? 'قيد المعالجة' : 'مكتمل'}</span>
+          </div>
+          <div class="transaction-info">
+            <span class="transaction-address">${tx.address}</span>
+            <span class="transaction-amount">${tx.amount} USDT</span>
+          </div>
+        `;
+        
+        transactionList.appendChild(txItem);
+      });
+    }
+    
+    // Show Toast Notification
+    function showToast(title, description, type = 'success') {
+      toastTitle.textContent = title;
+      toastDescription.textContent = description;
+      
+      toast.className = 'toast';
+      if (type === 'error') {
+        toast.classList.add('error');
+      } else {
+        toast.classList.add('success');
+      }
+      
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
