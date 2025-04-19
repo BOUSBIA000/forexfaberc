@@ -2,13 +2,13 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نظام الإنجازات - Forex Fabric</title>
   
-  <!-- Telegram Web App API -->
+  <!-- مكتبة تطبيق تلغرام للويب -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   
-  <!-- Cairo Font -->
+  <!-- تضمين خط القاهرة -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -29,12 +29,10 @@
       --red-800: #991B1B;
       --green-500: #22C55E;
       --green-600: #16A34A;
-      --teal-500: #14b8a6;
-      --teal-600: #0d9488;
-      --blue-500: #3b82f6;
-      --blue-600: #2563eb;
-      --purple-500: #8b5cf6;
-      --purple-600: #7c3aed;
+      --blue-500: #3B82F6;
+      --blue-600: #2563EB;
+      --purple-500: #8B5CF6;
+      --purple-600: #7C3AED;
     }
     
     * {
@@ -66,11 +64,7 @@
       background-color: var(--zinc-900);
       box-shadow: 0 4px 20px rgba(251, 191, 36, 0.2);
       overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .card:hover {
-      box-shadow: 0 8px 30px rgba(251, 191, 36, 0.3);
+      margin-bottom: 1rem;
     }
     
     .card-content {
@@ -104,36 +98,30 @@
       color: var(--amber-400);
     }
     
-    .header {
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--amber-400);
+    }
+    
+    .header-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
     
     .back-button {
+      background-color: transparent;
+      border: none;
       display: flex;
       align-items: center;
+      color: var(--amber-400);
+      cursor: pointer;
+      font-size: 0.875rem;
       gap: 0.25rem;
-      color: var(--amber-400);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-    
-    .back-button:hover {
-      transform: translateX(-2px);
-    }
-    
-    .back-icon {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-    
-    .page-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--amber-400);
     }
     
     .achievement-list {
@@ -147,69 +135,50 @@
       background-color: var(--zinc-800);
       border-radius: 0.5rem;
       overflow: hidden;
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease;
     }
     
     .achievement-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     
     .achievement-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem;
+      padding: 0.75rem 1rem;
       background-color: rgba(0, 0, 0, 0.2);
     }
     
-    .achievement-header-left {
+    .achievement-title {
+      font-weight: 600;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
     
     .achievement-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 1.5rem;
       height: 1.5rem;
-      color: var(--green-500);
-    }
-    
-    .achievement-icon.green {
-      color: var(--green-500);
-    }
-    
-    .achievement-icon.blue {
-      color: var(--blue-500);
-    }
-    
-    .achievement-icon.purple {
-      color: var(--purple-500);
-    }
-    
-    .achievement-name {
-      font-weight: 600;
     }
     
     .achievement-points {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 700;
       color: var(--yellow-300);
       background-color: rgba(251, 191, 36, 0.1);
       padding: 0.25rem 0.5rem;
-      border-radius: 9999px;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
     }
     
-    .achievement-points-icon {
-      width: 1rem;
-      height: 1rem;
-    }
-    
-    .achievement-content {
-      padding: 0.75rem;
+    .achievement-body {
+      padding: 0.75rem 1rem;
     }
     
     .achievement-description {
@@ -218,48 +187,10 @@
       margin-bottom: 0.75rem;
     }
     
-    .achievement-progress-bar {
-      height: 0.5rem;
-      background-color: var(--zinc-700);
-      border-radius: 9999px;
-      overflow: hidden;
-      margin-bottom: 0.25rem;
-    }
-    
-    .achievement-progress-fill {
-      height: 100%;
-      border-radius: 9999px;
-      transition: width 1s ease-in-out;
-    }
-    
-    .achievement-progress-fill.green {
-      background-color: var(--green-500);
-    }
-    
-    .achievement-progress-fill.blue {
-      background-color: var(--blue-500);
-    }
-    
-    .achievement-progress-fill.purple {
-      background-color: var(--purple-500);
-    }
-    
-    .achievement-progress-text {
-      font-size: 0.75rem;
-      color: var(--zinc-400);
-      text-align: right;
-      margin-bottom: 0.75rem;
-    }
-    
-    .achievement-footer {
+    .achievement-actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-    
-    .achievement-level {
-      font-size: 0.875rem;
-      color: var(--zinc-400);
     }
     
     .btn {
@@ -269,44 +200,148 @@
       gap: 0.5rem;
       padding: 0.5rem 0.75rem;
       border-radius: 0.375rem;
-      font-weight: 700;
+      font-weight: 600;
+      font-size: 0.875rem;
       cursor: pointer;
       border: none;
-      transition: all 0.3s ease;
-      font-family: 'Cairo', sans-serif;
-      font-size: 0.875rem;
+      transition: all 0.2s ease;
     }
     
     .btn-primary {
       background: linear-gradient(to right, var(--amber-500), var(--yellow-400));
-      background-size: 200% auto;
       color: black;
     }
     
     .btn-primary:hover {
-      background-position: right center;
-      transform: scale(1.02);
-    }
-    
-    .btn-primary:active {
-      transform: scale(0.98);
+      background: linear-gradient(to right, var(--amber-600), var(--yellow-500));
     }
     
     .btn-primary:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
     }
     
-    .rewards-section {
-      margin-top: 1.5rem;
+    .btn-secondary {
+      background-color: var(--zinc-700);
+      color: white;
     }
     
-    .section-title {
+    .btn-secondary:hover {
+      background-color: var(--zinc-600);
+    }
+    
+    .progress-container {
+      height: 0.5rem;
+      background-color: var(--zinc-700);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+      width: 100%;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+      text-align: right;
+    }
+    
+    .achievement-levels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+      gap: 0.5rem;
+    }
+    
+    .achievement-level {
+      flex: 1;
+      text-align: center;
+    }
+    
+    .level-dot {
+      width: 0.75rem;
+      height: 0.75rem;
+      border-radius: 50%;
+      margin: 0 auto 0.25rem;
+      background-color: var(--zinc-700);
+    }
+    
+    .level-dot.active {
+      background-color: var(--amber-400);
+    }
+    
+    .level-text {
+      font-size: 0.7rem;
+      color: var(--zinc-400);
+    }
+    
+    .level-text.active {
+      color: var(--amber-400);
+      font-weight: 600;
+    }
+    
+    .difficulty-beginner .achievement-header {
+      border-right: 3px solid var(--green-500);
+    }
+    
+    .difficulty-intermediate .achievement-header {
+      border-right: 3px solid var(--blue-500);
+    }
+    
+    .difficulty-advanced .achievement-header {
+      border-right: 3px solid var(--purple-500);
+    }
+    
+    .difficulty-expert .achievement-header {
+      border-right: 3px solid var(--red-700);
+    }
+    
+    .progress-beginner {
+      background-color: var(--green-500);
+    }
+    
+    .progress-intermediate {
+      background-color: var(--blue-500);
+    }
+    
+    .progress-advanced {
+      background-color: var(--purple-500);
+    }
+    
+    .progress-expert {
+      background-color: var(--red-700);
+    }
+    
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: var(--zinc-400);
+      border: 1px solid var(--zinc-700);
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    
+    .rewards-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    
+    .rewards-title {
       font-size: 1.125rem;
       font-weight: 600;
       color: var(--amber-400);
-      margin-bottom: 0.75rem;
     }
     
     .rewards-grid {
@@ -322,32 +357,26 @@
       text-align: center;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s ease;
     }
     
-    .reward-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-    
-    .reward-points {
+    .reward-cost {
       position: absolute;
       top: 0.5rem;
       right: 0.5rem;
       background-color: rgba(0, 0, 0, 0.5);
       color: var(--amber-400);
-      font-size: 0.625rem;
-      font-weight: 700;
-      padding: 0.125rem 0.5rem;
-      border-radius: 9999px;
+      font-size: 0.75rem;
+      padding: 0.125rem 0.375rem;
+      border-radius: 1rem;
+      font-weight: 600;
     }
     
-    .reward-emoji {
+    .reward-icon {
       font-size: 1.5rem;
       margin-bottom: 0.5rem;
     }
     
-    .reward-title {
+    .reward-name {
       font-size: 0.875rem;
       font-weight: 600;
       margin-bottom: 0.25rem;
@@ -366,7 +395,7 @@
       border-left: 4px solid var(--amber-400);
       border-radius: 0.375rem;
       padding: 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       max-width: 300px;
       z-index: 50;
       opacity: 0;
@@ -380,11 +409,7 @@
     }
     
     .toast.error {
-      border-left-color: var(--red-700);
-    }
-    
-    .toast.success {
-      border-left-color: var(--green-500);
+      border-left-color: #EF4444;
     }
     
     .toast-title {
@@ -399,7 +424,7 @@
     
     @media (max-width: 480px) {
       .card-content {
-        padding: 1.25rem;
+        padding: 1rem;
       }
     }
   </style>
@@ -408,7 +433,7 @@
   <div class="container">
     <div class="card">
       <div class="card-content">
-        <!-- Logo -->
+        <!-- شعار -->
         <div class="logo-container">
           <div class="logo">
             <div class="logo-inner">
@@ -420,62 +445,53 @@
           </div>
         </div>
 
-        <!-- Header -->
-        <div class="header">
-          <button id="back-button" class="back-button">
-            <svg xmlns="http://www.w3.org/2000/svg" class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <!-- الرأس والتنقل -->
+        <div class="header-nav">
+          <button class="back-button" id="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5"></path>
               <path d="M12 19l-7-7 7-7"></path>
             </svg>
             العودة
           </button>
-          <h2 class="page-title">نظام الإنجازات</h2>
+          <h1>نظام الإنجازات</h1>
         </div>
         
-        <!-- Achievements List -->
+        <!-- قائمة الإنجازات -->
         <div class="achievement-list">
-          <!-- Beginner Achievement -->
-          <div class="achievement-card">
+          <!-- إنجاز مبتدئ -->
+          <div class="achievement-card difficulty-beginner">
             <div class="achievement-header">
-              <div class="achievement-header-left">
-                <div class="achievement-icon green">
+              <div class="achievement-title">
+                <div class="achievement-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path>
                   </svg>
                 </div>
-                <span class="achievement-name">المتداول الجديد</span>
+                المتداول الجديد
               </div>
-              <div class="achievement-points">
-                <svg xmlns="http://www.w3.org/2000/svg" class="achievement-points-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M16 8h-6.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6"></path>
-                  <line x1="12" y1="19" x2="12" y2="5"></line>
-                </svg>
-                5 نقاط
-              </div>
+              <div class="achievement-points">5 نقاط</div>
             </div>
-            <div class="achievement-content">
-              <p class="achievement-description">
+            <div class="achievement-body">
+              <div class="achievement-description">
                 قم بتسجيل الدخول لمدة 3 أيام متتالية وتحقق من أسعار العملات.
-              </p>
-              <div class="achievement-progress-bar">
-                <div class="achievement-progress-fill green" id="beginner-progress" style="width: 66.7%"></div>
               </div>
-              <p class="achievement-progress-text">
-                2/3 أيام
-              </p>
-              <div class="achievement-footer">
-                <span class="achievement-level">مبتدئ</span>
-                <button class="btn btn-primary" id="beginner-claim" disabled>المطالبة بالمكافأة</button>
+              <div class="progress-container">
+                <div class="progress-fill progress-beginner" style="width: 66.7%"></div>
+              </div>
+              <div class="progress-text">2/3 أيام</div>
+              <div class="achievement-actions">
+                <button class="btn btn-primary">المطالبة بالمكافأة</button>
+                <span>مبتدئ</span>
               </div>
             </div>
           </div>
-          
-          <!-- Analyst Achievement -->
-          <div class="achievement-card">
+
+          <!-- إنجاز متوسط -->
+          <div class="achievement-card difficulty-intermediate">
             <div class="achievement-header">
-              <div class="achievement-header-left">
-                <div class="achievement-icon blue">
+              <div class="achievement-title">
+                <div class="achievement-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="2" x2="12" y2="6"></line>
                     <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -487,282 +503,224 @@
                     <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
                   </svg>
                 </div>
-                <span class="achievement-name">محلل الأسواق</span>
+                محلل الأسواق
               </div>
-              <div class="achievement-points">
-                <svg xmlns="http://www.w3.org/2000/svg" class="achievement-points-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M16 8h-6.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6"></path>
-                  <line x1="12" y1="19" x2="12" y2="5"></line>
-                </svg>
-                20 نقطة
-              </div>
+              <div class="achievement-points">20 نقطة</div>
             </div>
-            <div class="achievement-content">
-              <p class="achievement-description">
-                تحليل 5 أزواج مختلفة من العملات وإرسال تقارير الى المشرف
-              </p>
-              <div class="achievement-progress-bar">
-                <div class="achievement-progress-fill blue" id="analyst-progress" style="width: 40%"></div>
+            <div class="achievement-body">
+              <div class="achievement-description">
+                قم بتحليل 5 أزواج مختلفة من العملات وشارك تحليلك مع المجتمع.
               </div>
-              <p class="achievement-progress-text">
-                2/5 زوج عملات
-              </p>
-              <div class="achievement-footer">
-                <span class="achievement-level">متوسط</span>
-                <button class="btn btn-primary" id="analyst-claim" disabled>المطالبة بالمكافأة</button>
+              <div class="progress-container">
+                <div class="progress-fill progress-intermediate" style="width: 40%"></div>
+              </div>
+              <div class="progress-text">2/5 تحليلات</div>
+              <div class="achievement-actions">
+                <button class="btn btn-primary">المطالبة بالمكافأة</button>
+                <span>متوسط</span>
               </div>
             </div>
           </div>
-          
-          <!-- Expert Achievement -->
-          <div class="achievement-card">
+
+          <!-- إنجاز متقدم -->
+          <div class="achievement-card difficulty-advanced">
             <div class="achievement-header">
-              <div class="achievement-header-left">
-                <div class="achievement-icon purple">
+              <div class="achievement-title">
+                <div class="achievement-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                   </svg>
                 </div>
-                <span class="achievement-name">خبير التداول</span>
+                خبير التداول
               </div>
-              <div class="achievement-points">
-                <svg xmlns="http://www.w3.org/2000/svg" class="achievement-points-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M16 8h-6.5a2.5 2.5 0 0 0 0 5h3a2.5 2.5 0 0 1 0 5H6"></path>
-                  <line x1="12" y1="19" x2="12" y2="5"></line>
-                </svg>
-                50 نقطة
+              <div class="achievement-points">50 نقطة</div>
+            </div>
+            <div class="achievement-body">
+              <div class="achievement-description">
+                أكمل 10 تداولات رابحة متتالية في حساب التداول التجريبي.
+              </div>
+              <div class="progress-container">
+                <div class="progress-fill progress-advanced" style="width: 20%"></div>
+              </div>
+              <div class="progress-text">2/10 تداولات</div>
+              <div class="achievement-actions">
+                <button class="btn btn-primary">المطالبة بالمكافأة</button>
+                <span>متقدم</span>
               </div>
             </div>
-            <div class="achievement-content">
-              <p class="achievement-description">
-                إكمال 10 تداولات رابحة متتالية على منصة الشركة
-              </p>
-              <div class="achievement-progress-bar">
-                <div class="achievement-progress-fill purple" id="expert-progress" style="width: 20%"></div>
+          </div>
+
+          <!-- إنجاز خبير -->
+          <div class="achievement-card difficulty-expert">
+            <div class="achievement-header">
+              <div class="achievement-title">
+                <div class="achievement-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                </div>
+                سيد الأسواق المالية
               </div>
-              <p class="achievement-progress-text">
-                2/10 تداولات
-              </p>
-              <div class="achievement-footer">
-                <span class="achievement-level">متقدم</span>
-                <button class="btn btn-primary" id="expert-claim" disabled>المطالبة بالمكافأة</button>
+              <div class="achievement-points">100 نقطة</div>
+            </div>
+            <div class="achievement-body">
+              <div class="achievement-description">
+                حقق ربحًا بنسبة 50% في حساب التداول الخاص بك خلال شهر واحد.
+              </div>
+              <div class="progress-container">
+                <div class="progress-fill progress-expert" style="width: 10%"></div>
+              </div>
+              <div class="progress-text">5% / 50%</div>
+              <div class="achievement-levels">
+                <div class="achievement-level">
+                  <div class="level-dot active"></div>
+                  <div class="level-text active">5%</div>
+                </div>
+                <div class="achievement-level">
+                  <div class="level-dot"></div>
+                  <div class="level-text">10%</div>
+                </div>
+                <div class="achievement-level">
+                  <div class="level-dot"></div>
+                  <div class="level-text">25%</div>
+                </div>
+                <div class="achievement-level">
+                  <div class="level-dot"></div>
+                  <div class="level-text">50%</div>
+                </div>
+              </div>
+              <div class="achievement-actions">
+                <button class="btn btn-primary">المطالبة بالمكافأة</button>
+                <span>خبير</span>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- Rewards Section -->
-        <div class="rewards-section">
-          <h3 class="section-title">المكافآت المتاحة</h3>
-          <div class="rewards-grid">
-            <div class="reward-card">
-              <div class="reward-points">50 نقطة</div>
-              <div class="reward-emoji">📊</div>
-              <h4 class="reward-title">تحليل متقدم</h4>
-              <p class="reward-description">تحليل فني متقدم لزوج عملات من اختيارك</p>
-            </div>
-            
-            <div class="reward-card">
-              <div class="reward-points">75 نقطة</div>
-              <div class="reward-emoji">📚</div>
-              <h4 class="reward-title">كتاب إلكتروني</h4>
-              <p class="reward-description">كتاب PDF عن استراتيجيات التداول</p>
-            </div>
+        <!-- المكافآت المتاحة -->
+        <div class="rewards-header">
+          <div class="rewards-title">المكافآت المتاحة</div>
+        </div>
+        <div class="rewards-grid">
+          <div class="reward-card">
+            <div class="reward-cost">50 نقطة</div>
+            <div class="reward-icon">📊</div>
+            <div class="reward-name">تحليل متقدم</div>
+            <div class="reward-description">تحليل فني متقدم من خبراء الفوركس</div>
           </div>
+          <div class="reward-card">
+            <div class="reward-cost">100 نقطة</div>
+            <div class="reward-icon">📱</div>
+            <div class="reward-name">مؤشرات خاصة</div>
+            <div class="reward-description">مؤشرات تداول حصرية للمتداولين المتميزين</div>
+          </div>
+          <div class="reward-card">
+            <div class="reward-cost">75 نقطة</div>
+            <div class="reward-icon">📘</div>
+            <div class="reward-name">كتاب إلكتروني</div>
+            <div class="reward-description">استراتيجيات التداول للمحترفين</div>
+          </div>
+          <div class="reward-card">
+            <div class="reward-cost">200 نقطة</div>
+            <div class="reward-icon">👨‍🏫</div>
+            <div class="reward-name">جلسة تدريبية</div>
+            <div class="reward-description">جلسة خاصة مع متداول محترف</div>
+          </div>
+        </div>
+        
+        <!-- التذييل -->
+        <div class="footer">
+          <span class="badge">v1.1.0 Achievements</span>
         </div>
       </div>
     </div>
   </div>
   
-  <!-- Toast Notification -->
+  <!-- رسالة التنبيه -->
   <div class="toast" id="toast">
-    <div class="toast-title" id="toast-title">عنوان الإشعار</div>
-    <div class="toast-description" id="toast-description">وصف الإشعار هنا</div>
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-description" id="toast-description"></div>
   </div>
 
   <script>
-    // DOM Elements
-    const beginnerProgress = document.getElementById('beginner-progress');
-    const analystProgress = document.getElementById('analyst-progress');
-    const expertProgress = document.getElementById('expert-progress');
-    const beginnerClaimBtn = document.getElementById('beginner-claim');
-    const analystClaimBtn = document.getElementById('analyst-claim');
-    const expertClaimBtn = document.getElementById('expert-claim');
+    // تهيئة تطبيق تلغرام للويب
+    let tg = window.Telegram?.WebApp;
+    
+    // ضبط السمة والأزرار بناءً على تلغرام إذا كان متاحًا
+    if (tg) {
+      tg.expand(); // توسيع نافذة التطبيق
+      
+      // ضبط سمة الألوان بناءً على سمة تلغرام
+      if (tg.colorScheme === 'dark') {
+        document.body.classList.add('dark-theme');
+      }
+      
+      // إضافة زر رئيسي في تطبيق تلغرام
+      if (tg.MainButton) {
+        tg.MainButton.setText('متابعة التداول');
+        tg.MainButton.onClick(() => {
+          window.location.href = "index.html";
+        });
+      }
+    }
+
+    // العناصر المهمة
     const toast = document.getElementById('toast');
     const toastTitle = document.getElementById('toast-title');
     const toastDescription = document.getElementById('toast-description');
+    const backButton = document.getElementById('back-button');
+    const achievementButtons = document.querySelectorAll('.achievement-actions .btn-primary');
     
-    // User Data (Simulated)
-    let userData = {
-      telegramId: '12345',
-      username: 'demo_user',
-      points: 250,
-      referrals: 3,
-      achievements: [
-        { id: 'beginner', progress: 2, total: 3, completed: false, claimed: false },
-        { id: 'analyst', progress: 2, total: 5, completed: false, claimed: false },
-        { id: 'expert', progress: 2, total: 10, completed: false, claimed: false }
-      ]
-    };
-    
-    // Telegram WebApp
-    let tg = window.Telegram?.WebApp;
-    
-    // Initialize App
-    document.addEventListener('DOMContentLoaded', () => {
-      initApp();
-      
-      // Set Telegram WebApp Settings
-      if (tg) {
-        tg.ready();
-        tg.expand();
+    // ثوابت
+    const ACHIEVEMENTS = [
+      {
+        id: 'beginner_trader',
+        title: 'المتداول الجديد',
+        points: 5,
+        description: 'قم بتسجيل الدخول لمدة 3 أيام متتالية وتحقق من أسعار العملات',
+        difficulty: 'beginner',
+        progress: 2,
+        total: 3
+      },
+      {
+        id: 'market_analyst',
+        title: 'محلل الأسواق',
+        points: 20,
+        description: 'قم بتحليل 5 أزواج مختلفة من العملات وشارك تحليلك مع المجتمع',
+        difficulty: 'intermediate',
+        progress: 2,
+        total: 5
+      },
+      {
+        id: 'trading_expert',
+        title: 'خبير التداول',
+        points: 50,
+        description: 'أكمل 10 تداولات رابحة متتالية في حساب التداول التجريبي',
+        difficulty: 'advanced',
+        progress: 2,
+        total: 10
+      },
+      {
+        id: 'master_trader',
+        title: 'سيد الأسواق المالية',
+        points: 100,
+        description: 'حقق ربحًا بنسبة 50% في حساب التداول الخاص بك خلال شهر واحد',
+        difficulty: 'expert',
+        progress: 5,
+        total: 50
       }
-    });
+    ];
     
-    // Initialize App
-    function initApp() {
-      updateAchievements();
-      setupEventListeners();
-    }
-    
-    // Update Achievements
-    function updateAchievements() {
-      // Find achievements in userData
-      const beginner = userData.achievements.find(a => a.id === 'beginner');
-      const analyst = userData.achievements.find(a => a.id === 'analyst');
-      const expert = userData.achievements.find(a => a.id === 'expert');
-      
-      // Update progress bars
-      if (beginner) {
-        const percentage = Math.min(100, (beginner.progress / beginner.total) * 100);
-        beginnerProgress.style.width = `${percentage}%`;
-        beginnerClaimBtn.disabled = !(beginner.progress >= beginner.total && !beginner.claimed);
-        if (beginner.claimed) {
-          beginnerClaimBtn.textContent = 'تم الاستلام';
-        }
-      }
-      
-      if (analyst) {
-        const percentage = Math.min(100, (analyst.progress / analyst.total) * 100);
-        analystProgress.style.width = `${percentage}%`;
-        analystClaimBtn.disabled = !(analyst.progress >= analyst.total && !analyst.claimed);
-        if (analyst.claimed) {
-          analystClaimBtn.textContent = 'تم الاستلام';
-        }
-      }
-      
-      if (expert) {
-        const percentage = Math.min(100, (expert.progress / expert.total) * 100);
-        expertProgress.style.width = `${percentage}%`;
-        expertClaimBtn.disabled = !(expert.progress >= expert.total && !expert.claimed);
-        if (expert.claimed) {
-          expertClaimBtn.textContent = 'تم الاستلام';
-        }
-      }
-    }
-    
-    // Setup Event Listeners
-    function setupEventListeners() {
-      // Back Button
-      const backButton = document.getElementById('back-button');
-      if (backButton) {
-        backButton.addEventListener('click', () => {
-          window.location.href = 'forex_app_home.html';
-        });
-      }
-      
-      // Beginner Claim Button
-      beginnerClaimBtn.addEventListener('click', () => {
-        const beginner = userData.achievements.find(a => a.id === 'beginner');
-        if (!beginner) return;
-        
-        if (beginner.progress < beginner.total) {
-          showToast('لم يكتمل بعد', 'يجب إكمال الإنجاز أولاً قبل المطالبة بالمكافأة.', 'error');
-          return;
-        }
-        
-        if (beginner.claimed) {
-          showToast('تمت المطالبة مسبقًا', 'لقد حصلت على مكافأة هذا الإنجاز بالفعل.', 'error');
-          return;
-        }
-        
-        // Update achievement and add points
-        beginner.claimed = true;
-        beginner.completed = true;
-        userData.points += 5;
-        
-        // Update UI
-        updateAchievements();
-        
-        showToast('تم بنجاح!', 'تم إضافة 5 نقاط إلى رصيدك.');
-      });
-      
-      // Analyst Claim Button
-      analystClaimBtn.addEventListener('click', () => {
-        const analyst = userData.achievements.find(a => a.id === 'analyst');
-        if (!analyst) return;
-        
-        if (analyst.progress < analyst.total) {
-          showToast('لم يكتمل بعد', 'يجب إكمال الإنجاز أولاً قبل المطالبة بالمكافأة.', 'error');
-          return;
-        }
-        
-        if (analyst.claimed) {
-          showToast('تمت المطالبة مسبقًا', 'لقد حصلت على مكافأة هذا الإنجاز بالفعل.', 'error');
-          return;
-        }
-        
-        // Update achievement and add points
-        analyst.claimed = true;
-        analyst.completed = true;
-        userData.points += 20;
-        
-        // Update UI
-        updateAchievements();
-        
-        showToast('تم بنجاح!', 'تم إضافة 20 نقطة إلى رصيدك.');
-      });
-      
-      // Expert Claim Button
-      expertClaimBtn.addEventListener('click', () => {
-        const expert = userData.achievements.find(a => a.id === 'expert');
-        if (!expert) return;
-        
-        if (expert.progress < expert.total) {
-          showToast('لم يكتمل بعد', 'يجب إكمال الإنجاز أولاً قبل المطالبة بالمكافأة.', 'error');
-          return;
-        }
-        
-        if (expert.claimed) {
-          showToast('تمت المطالبة مسبقًا', 'لقد حصلت على مكافأة هذا الإنجاز بالفعل.', 'error');
-          return;
-        }
-        
-        // Update achievement and add points
-        expert.claimed = true;
-        expert.completed = true;
-        userData.points += 50;
-        
-        // Update UI
-        updateAchievements();
-        
-        showToast('تم بنجاح!', 'تم إضافة 50 نقطة إلى رصيدك.');
-      });
-    }
-    
-    // Show Toast Notification
-    function showToast(title, description, type = 'success') {
+    // دالة إظهار رسالة التنبيه
+    function showToast(title, description, isError = false) {
       toastTitle.textContent = title;
       toastDescription.textContent = description;
       
-      toast.className = 'toast';
-      if (type === 'error') {
+      if (isError) {
         toast.classList.add('error');
       } else {
-        toast.classList.add('success');
+        toast.classList.remove('error');
       }
       
       toast.classList.add('show');
@@ -771,6 +729,27 @@
         toast.classList.remove('show');
       }, 3000);
     }
+    
+    // دالة العودة إلى الصفحة الرئيسية
+    function goBack() {
+      window.location.href = "index.html";
+    }
+    
+    // معالجة أحداث الأزرار
+    backButton.addEventListener('click', goBack);
+    
+    // معالجة أحداث أزرار المطالبة بالمكافآت
+    achievementButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        const achievement = ACHIEVEMENTS[index];
+        
+        if (achievement.progress >= achievement.total) {
+          showToast('مبروك! 🎉', `لقد أكملت إنجاز "${achievement.title}" وحصلت على ${achievement.points} نقاط!`);
+        } else {
+          showToast('غير مكتمل', 'لم تكمل متطلبات هذا الإنجاز بعد', true);
+        }
+      });
+    });
   </script>
 </body>
 </html>
