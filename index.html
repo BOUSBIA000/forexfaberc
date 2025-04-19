@@ -806,4 +806,340 @@
             </a>
             <a href="#" class="social-link" data-social="twitter" id="twitter-link">
               <svg xmlns="http://www.w3.org/2000/svg" class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4
+                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4 6.1 6.9 8.8 8.3-6.1-5.8-12.6-12-14.5-17.8C3.3 3.7 3.8 1.8 4.8.8s2.3-.7 3.9.8c1.3 1.2 2.4 2.7 3.2 4.6 2.1-2.2 4.1-4.1 5.2-5.4.9 1.3 1.6 3 1.9 4.9z"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-link" data-social="facebook" id="facebook-link">
+              <svg xmlns="http://www.w3.org/2000/svg" class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3.1a3 3 0 0 0-3 3v3h-2v4h2v8h3v-8h2.1l.6-4h-2.7V5a.9.9 0 0 1 .9-.9h3z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Footer Section -->
+        <div class="footer">
+          <span class="badge">Forex Fabric Points System</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <div class="toast-title">
+      <svg id="toast-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12" y2="16"></line>
+      </svg>
+      <span id="toast-title-text"></span>
+    </div>
+    <p id="toast-description" class="toast-description"></p>
+  </div>
+  
+  <script>
+    // العناصر التي سيتم التعامل معها
+    const usernameDisplay = document.getElementById('username-display');
+    const usernameInputContainer = document.getElementById('username-input-container');
+    const usernameInput = document.getElementById('username-input');
+    const saveUsernameButton = document.getElementById('save-username');
+    const avatarPlaceholder = document.getElementById('avatar-placeholder');
+    const avatarInitials = document.getElementById('avatar-initials');
+    const userImage = document.getElementById('user-image');
+    const pointsValue = document.getElementById('points-value');
+    const referralsValue = document.getElementById('referrals-value');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    const hoursDisplay = document.getElementById('hours');
+    const minutesDisplay = document.getElementById('minutes');
+    const secondsDisplay = document.getElementById('seconds');
+    const claimDailyButton = document.getElementById('claim-daily');
+    const copyReferralButton = document.getElementById('copy-referral');
+    const telegramLink = document.getElementById('telegram-link');
+    const twitterLink = document.getElementById('twitter-link');
+    const facebookLink = document.getElementById('facebook-link');
+    const joinDateDisplay = document.getElementById('join-date');
+    const userLevelDisplay = document.getElementById('user-level');
+    const achievementsButton = document.getElementById('achievements-btn');
+    const withdrawButton = document.getElementById('withdraw-btn');
+    
+    let countdownInterval;
+    
+    // دالة لعرض الإشعارات
+    function showToast(title, description, type = 'info') {
+      const toast = document.getElementById('toast');
+      const toastIcon = document.getElementById('toast-icon');
+      const toastTitleText = document.getElementById('toast-title-text');
+      
+      toast.classList.remove('error', 'success', 'warning', 'info');
+      toast.classList.add(type);
+      toast.classList.add('show');
+      
+      if (type === 'success') {
+        toastIcon.innerHTML = `<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/>`;
+      } else if (type === 'error') {
+        toastIcon.innerHTML = `<line x1="18" y1="6" x2="6" y2="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="6" y1="6" x2="18" y2="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+      } else if (type === 'warning') {
+        toastIcon.innerHTML = `<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10.29 3.86 1.83 18a2 2 0 0 0 1.73 3.06h16.94a2 2 0 0 0 1.73-3.06L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="17" x2="12.01" y2="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+      } else {
+        toastIcon.innerHTML = `<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line>`;
+      }
+      
+      toastTitleText.textContent = title;
+      toast.querySelector('.toast-description').textContent = description;
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    // دالة لحفظ البيانات في Local Storage
+    function saveData(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+    
+    // دالة لجلب البيانات من Local Storage
+    function loadData(key) {
+      try {
+        const serializedData = localStorage.getItem(key);
+        return serializedData === null ? null : JSON.parse(serializedData);
+      } catch (error) {
+        console.error("Failed to load data:", error);
+        return null;
+      }
+    }
+    
+    // دالة لتهيئة بيانات المستخدم
+    function initializeUserData() {
+      return {
+        username: null,
+        points: 0,
+        referrals: 0,
+        lastClaimed: null,
+        telegramJoined: false,
+        twitterJoined: false,
+        facebookJoined: false,
+        joinDate: new Date().toLocaleDateString(),
+      };
+    }
+    
+    // دالة لتحميل بيانات المستخدم
+    function loadUserData() {
+      let userData = loadData('userData');
+      if (!userData) {
+        userData = initializeUserData();
+        saveData('userData', userData);
+      }
+      return userData;
+    }
+    
+    // دالة لتحديث واجهة المستخدم
+    function updateUI() {
+      const userData = loadUserData();
+      
+      // تحديث اسم المستخدم
+      if (userData.username) {
+        usernameDisplay.textContent = userData.username;
+        usernameInputContainer.style.display = 'none';
+        
+        // عرض الحروف الأولى من الاسم في الصورة الرمزية
+        const nameParts = userData.username.split(' ');
+        let initials = '';
+        if (nameParts.length === 1) {
+          initials = nameParts[0].charAt(0).toUpperCase();
+        } else if (nameParts.length > 1) {
+          initials = nameParts[0].charAt(0).toUpperCase() + nameParts[nameParts.length - 1].charAt(0).toUpperCase();
+        }
+        avatarInitials.textContent = initials;
+        avatarPlaceholder.style.display = 'flex';
+        userImage.style.display = 'none';
+      } else {
+        usernameDisplay.textContent = 'مستخدم جديد';
+        usernameInputContainer.style.display = 'flex';
+        avatarPlaceholder.style.display = 'flex';
+        userImage.style.display = 'none';
+      }
+      
+      // تحديث النقاط والإحالات
+      pointsValue.textContent = userData.points;
+      referralsValue.textContent = userData.referrals;
+      
+      // تحديث شريط التقدم
+      const progress = Math.min(userData.points / 2000, 1);
+      progressFill.style.width = `${progress * 100}%`;
+      progressText.textContent = `${userData.points}/2000`;
+      
+      // تحديث تاريخ الانضمام
+      joinDateDisplay.textContent = `انضم في ${userData.joinDate}`;
+      
+      //تحديث مستوى المستخدم
+      if (userData.points < 500) {
+        userLevelDisplay.textContent = 'مبتدئ';
+        userLevelDisplay.classList.remove('premium');
+      } else if (userData.points < 1500) {
+        userLevelDisplay.textContent = 'متوسط';
+        userLevelDisplay.classList.remove('premium');
+      } else if (userData.points < 3000) {
+        userLevelDisplay.textContent = 'متقدم';
+        userLevelDisplay.classList.add('premium');
+      } else {
+        userLevelDisplay.textContent = 'خبير';
+        userLevelDisplay.classList.add('premium');
+      }
+    }
+    
+    // دالة لتحديث العد التنازلي
+    function updateCountdown() {
+      const now = new Date();
+      const nextClaimTime = new Date(now);
+      nextClaimTime.setDate(now.getDate() + 1);
+      nextClaimTime.setHours(0, 0, 0, 0);
+      
+      const timeLeft = nextClaimTime.getTime() - now.getTime();
+      
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+      
+      hoursDisplay.textContent = hours;
+      minutesDisplay.textContent = minutes;
+      secondsDisplay.textContent = seconds;
+    }
+    
+    // دالة للتحقق من حالة الإحالة
+    function checkReferral() {
+      // هنا يمكنك إضافة الكود الخاص بك للتحقق من حالة الإحالة
+      // على سبيل المثال، يمكنك استخدام معرّف فريد يتم تمريره عبر رابط الإحالة
+      // لتتبع عدد الإحالات التي قام بها المستخدم
+    }
+    
+    // إضافة نقاط عند الضغط على الروابط الاجتماعية
+    function handleSocialLinkClick(social) {
+      let userData = loadUserData();
+      
+      if (!userData[`${social}Joined`]) {
+        userData.points += 5;
+        userData[`${social}Joined`] = true;
+        saveData('userData', userData);
+        updateUI();
+        showToast('تمت إضافة النقاط!', 'تمت إضافة 5 نقاط لرصيدك', 'success');
+        
+        // تعطيل الرابط بعد الضغط عليه
+        document.getElementById(`${social}-link`).classList.add('visited');
+      } else {
+        showToast('تم الضغط مسبقًا', 'لقد حصلت بالفعل على نقاط هذا الرابط', 'info');
+      }
+    }
+    
+    // معالجة الضغط على زر حفظ اسم المستخدم
+    saveUsernameButton.addEventListener('click', () => {
+      const username = usernameInput.value.trim();
+      if (username) {
+        let userData = loadUserData();
+        userData.username = username;
+        saveData('userData', userData);
+        updateUI();
+        showToast('تم الحفظ!', 'تم حفظ اسم المستخدم بنجاح', 'success');
+      } else {
+        showToast('خطأ', 'الرجاء إدخال اسم المستخدم', 'error');
+      }
+    });
+    
+    // معالجة الضغط على زر الحصول على النقاط اليومية
+    claimDailyButton.addEventListener('click', () => {
+      let userData = loadUserData();
+      
+      // التحقق من أن المستخدم لم يطالب بالنقاط اليومية بالفعل
+      if (!userData.lastClaimed || new Date().toLocaleDateString() !== userData.lastClaimed) {
+        userData.points += 5;
+        userData.lastClaimed = new Date().toLocaleDateString();
+        saveData('userData', userData);
+        updateUI();
+        showToast('تمت المطالبة!', 'تمت إضافة 5 نقاط لرصيدك', 'success');
+      } else {
+        showToast('تمت المطالبة مسبقًا', 'لقد طالبت بالفعل بنقاطك اليومية', 'info');
+      }
+    });
+    
+    // تعديل وظيفة نسخ رابط الإحالة لتستخدم الرابط المطلوب:
+    copyReferralButton.addEventListener('click', () => {
+      const referralLink = "https://t.me/nemberfcker_bot";
+      
+      navigator.clipboard.writeText(referralLink).then(() => {
+        showToast('تم النسخ!', 'تم نسخ رابط الإحالة إلى الحافظة', 'success');
+      }).catch(err => {
+        // في حالة فشل النسخ، نعرض الرابط للمستخدم
+        showToast('انسخ الرابط', 'https://t.me/nemberfcker_bot', 'info');
+      });
+    });
+    
+    // إضافة معالجات النقر للروابط الاجتماعية
+    telegramLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleSocialLinkClick('telegram');
+    });
+    
+    twitterLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleSocialLinkClick('twitter');
+    });
+    
+    facebookLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleSocialLinkClick('facebook');
+    });
+    
+    // تعديل وظائف التنقل بين الصفحات:
+    achievementsButton.addEventListener('click', () => {
+      // استخدام window.location.href مع المسار الكامل
+      window.location.href = window.location.origin + '/achievements.html';
+      
+      // إظهار تأكيد بصري
+      showToast('جاري الانتقال', 'جاري الانتقال إلى صفحة الإنجازات...', 'info');
+    });
+    
+    withdrawButton.addEventListener('click', () => {
+      // استخدام window.location.href مع المسار الكامل
+      window.location.href = window.location.origin + '/withdraw.html';
+      
+      // إظهار تأكيد بصري
+      showToast('جاري الانتقال', 'جاري الانتقال إلى صفحة السحب...', 'info');
+    });
+    
+    // إضافة تأثير بصري عند النقر على الأزرار:
+    const allButtons = document.querySelectorAll('.btn');
+    allButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          this.style.transform = 'scale(1)';
+        }, 100);
+      });
+    });
+    
+    // إضافة في نهاية الملف قبل startApp()
+    function setupBackButton() {
+      const backButton = document.getElementById('back-button');
+      if (backButton) {
+        backButton.addEventListener('click', () => {
+          window.location.href = window.location.origin + '/index.html';
+        });
+      }
+    }
+    
+    function startApp() {
+      loadUserData();
+      updateUI();
+      updateCountdown();
+      checkReferral();
+      setupBackButton();
+      
+      // تحديث العد التنازلي كل ثانية
+      countdownInterval = setInterval(updateCountdown, 1000);
+    }
+    
+    startApp();
+  </script>
+</body>
+</html>
